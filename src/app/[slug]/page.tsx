@@ -532,7 +532,7 @@ function OverviewContent() {
           </div>
           <figure className="institution-photo">
             <Image
-              src="/IMG_2879.jpg"
+              src="/IMG_2879.JPG"
               alt="Signboard at the Central Forensic Science Laboratory, Ramanthapur, Hyderabad"
               width={1248}
               height={1248}
