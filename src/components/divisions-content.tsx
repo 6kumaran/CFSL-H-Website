@@ -305,10 +305,6 @@ export default function DivisionsContent() {
                 ← Back to All Divisions
               </button>
 
-              <span className="section-kicker">
-                CFSL Hyderabad · Scientific Division
-              </span>
-
               <h2>{selected}</h2>
 
               <p>{current?.overview}</p>

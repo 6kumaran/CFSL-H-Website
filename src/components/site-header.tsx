@@ -75,7 +75,7 @@ export function SiteHeader() {
       <div className="utility-bar">
         <div className="site-container utility-inner">
           <span className="utility-caption">
-            Scientific service · Public information · Institutional resources
+            Government of India · Ministry of Home Affairs · Directorate of Forensic Science Services
           </span>
           <div className="utility-right">
             <div className="utility-actions">
@@ -162,8 +162,8 @@ export function SiteHeader() {
               <img src="/Indian_Embelem-removebg-preview.png" alt="National Emblem" />
             </span>
             <span className="brand-copy">
-              <span className="brand-title">Central Forensic Science Laboratories</span>
-              <span className="brand-subtitle">Digital Forensic Science Services</span>
+              <span className="brand-title">Central Forensic Science Laboratory, Hyderabad</span>
+              <span className="brand-subtitle">Directorate of Forensic Science Services</span>
             </span>
           </Link>
           <div className="identity-actions">

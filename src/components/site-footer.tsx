@@ -13,7 +13,7 @@ export function SiteFooter() {
             <span>Central Forensic Science Laboratories</span>
           </div>
           <p className="footer-copy">
-            Digital Forensic Science Services. This website is a concept using sample content;
+            Directorate of Forensic Science Services. This website is a concept using sample content;
             institutional information should be verified before publication.
           </p>
         </section>

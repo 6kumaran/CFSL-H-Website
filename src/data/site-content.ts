@@ -37,8 +37,6 @@ export const navigation: NavItem[] = [
       { label: "Related Links", href: "/notices" },
       { label: "Important Links", href: "/notices" },
       { label: "Vigilance Complaint Information Management System (VCIMS)", href: "/notices" },
-      { label: "Delhi Govt. Website", href: "/notices" },
-      { label: "Recruitment Rules", href: "/notices" },
     ],
   },
   { label: "RTI", href: "/rti" },
