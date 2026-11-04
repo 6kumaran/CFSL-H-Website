@@ -555,7 +555,7 @@ function OverviewContent() {
           <article className="institution-fact">
             <span className="institution-fact-icon"><MapPin size={22} aria-hidden="true" /></span>
             <div>
-              <span className="institution-fact-label">Location shown on the signboard</span>
+              <span className="institution-fact-label">Location </span>
               <h3>Ramanthapur, Hyderabad</h3>
               <p>Hyderabad – 500 013, Telangana, India</p>
             </div>
@@ -563,7 +563,7 @@ function OverviewContent() {
           <article className="institution-fact">
             <span className="institution-fact-icon"><Award size={22} aria-hidden="true" /></span>
             <div>
-              <span className="institution-fact-label">Accreditation wording on signboard</span>
+              <span className="institution-fact-label">Accreditation </span>
               <h3>ISO/IEC 17025 (2017)</h3>
               <p>The signboard displays “An ISO - IEC 17025 (2017) Accredited Laboratory.” Current accreditation status and applicable standard edition should be verified before publication as a current claim.</p>
             </div>
@@ -655,7 +655,7 @@ function ContactContent() {
               <div>
                 <span className="contact-card-label">Publicly listed email</span>
                 <h3>Email the laboratory</h3>
-                <a className="contact-value" href="mailto:director.cfsl-hyd@gov.in">
+                <a className="contact-value" href="https://mail.google.com/mail/u/0/#inbox?compose=CllgCJqWgTlJBhmZmjJZBvNvmlcdVdztKWmrnsVvrWLzxHpzMcGFrHpFKgSHNCmxXCbPDpkJzdq">
                   director.cfsl-hyd@gov.in
                 </a>
                 <p className="contact-note">

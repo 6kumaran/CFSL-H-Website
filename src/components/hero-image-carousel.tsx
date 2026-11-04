@@ -74,9 +74,6 @@ export default function HeroImageCarousel() {
           <h2>{activeSlide.title}</h2>
           <p>{activeSlide.description}</p>
         </div>
-        <div className="hero-carousel-count" aria-label={`Slide ${activeIndex + 1} of ${slides.length}`}>
-          {activeIndex + 1} <span>/</span> {slides.length}
-        </div>
       </div>
 
       <div className="hero-carousel-toolbar" aria-label="Image carousel controls">
