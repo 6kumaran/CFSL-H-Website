@@ -39,16 +39,12 @@ export function SiteHeader() {
     const query = searchQuery.trim();
     if (!query) return;
 
-    const currentParams = new URLSearchParams(window.location.search);
-    const activeTab =
-      pathname === "/" && currentParams.get("noticeTab") === "tenders"
-        ? "tenders"
-        : "notifications";
-
+    // Send the visitor to the site-wide search results page.
     const params = new URLSearchParams();
-    params.set("noticeSearch", query);
-    params.set("noticeTab", activeTab);
-    router.push(`/?${params.toString()}#public-notices`);
+    params.set("q", query);
+    router.push(`/search?${params.toString()}`);
+    setMobileOpen(false);
+    setOpenMenu(null);
   };
 
   const searchBox = (mobile = false) => (
@@ -59,12 +55,12 @@ export function SiteHeader() {
     >
       <Search className="search-icon" size={15} aria-hidden="true" />
       <input
-        aria-label="Search notifications and tenders"
-        placeholder="Search notifications & tenders"
+        aria-label="Search the entire website"
+        placeholder="Search the entire website"
         value={searchQuery}
         onChange={(event) => setSearchQuery(event.target.value)}
       />
-      <button type="submit" aria-label="Search notifications and tenders">
+      <button type="submit" aria-label="Search the entire website">
         <ArrowUpRight size={15} aria-hidden="true" />
       </button>
     </form>

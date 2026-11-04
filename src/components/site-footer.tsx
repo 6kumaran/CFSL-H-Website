@@ -63,7 +63,7 @@ export function SiteFooter() {
 
       <div className="site-container footer-bottom">
         <span>© {new Date().getFullYear()} CFSL Hyderabad website concept</span>
-        <span className="footer-bottom-note">Sample content · Not an official live service</span>
+        <span className="footer-bottom-note">Last Updated : </span>
         <a href="#top" aria-label="Back to top">Back to top ↑</a>
       </div>
     </footer>

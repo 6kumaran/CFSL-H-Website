@@ -1,0 +1,657 @@
+/*
+ * CFSL Hyderabad — page-wide motion layer
+ * Place at: src/app/transitions.css
+ * Import after globals.css in src/app/layout.tsx.
+ *
+ * CSS-only enhancement. Does not change layout, content, or functionality.
+ * Uses the actual page/component classes from the current project source.
+ */
+
+/* --------------------------------------------------------------------------
+   Motion foundations
+   -------------------------------------------------------------------------- */
+
+:root {
+  --cfsl-motion-fast: 180ms;
+  --cfsl-motion-medium: 360ms;
+  --cfsl-motion-slow: 620ms;
+  --cfsl-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --cfsl-ease-soft: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--saffron, #d59b37);
+  outline-offset: 4px;
+}
+
+/* Every route gets a quiet entrance without changing its geometry. */
+main {
+  animation: cfsl-page-enter 560ms var(--cfsl-ease-out) both;
+}
+
+@keyframes cfsl-page-enter {
+  from { opacity: 0.72; }
+  to { opacity: 1; }
+}
+
+@keyframes cfsl-rise-in {
+  from { opacity: 0; translate: 0 20px; }
+  to { opacity: 1; translate: 0 0; }
+}
+
+@keyframes cfsl-soft-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes cfsl-slide-in-left {
+  from { opacity: 0; translate: -18px 0; }
+  to { opacity: 1; translate: 0 0; }
+}
+
+@keyframes cfsl-slide-in-right {
+  from { opacity: 0; translate: 18px 0; }
+  to { opacity: 1; translate: 0 0; }
+}
+
+@keyframes cfsl-scale-in {
+  from { opacity: 0; scale: 0.975; }
+  to { opacity: 1; scale: 1; }
+}
+
+/* --------------------------------------------------------------------------
+   Shared page banner, breadcrumbs and headings
+   -------------------------------------------------------------------------- */
+
+.page-banner {
+  animation: cfsl-soft-in 520ms ease-out both;
+}
+
+.page-banner-inner > * {
+  animation: cfsl-rise-in 620ms var(--cfsl-ease-out) both;
+}
+
+.page-banner-inner > *:nth-child(1) { animation-delay: 40ms; }
+.page-banner-inner > *:nth-child(2) { animation-delay: 110ms; }
+.page-banner-inner > *:nth-child(3) { animation-delay: 180ms; }
+
+.breadcrumbs a {
+  transition: color var(--cfsl-motion-fast) ease, opacity var(--cfsl-motion-fast) ease;
+}
+
+.breadcrumbs a:hover {
+  opacity: 0.78;
+}
+
+.section-heading,
+.section-kicker,
+.section-intro {
+  transition: color var(--cfsl-motion-medium) ease;
+}
+
+/* --------------------------------------------------------------------------
+   Overview and institutional profile
+   -------------------------------------------------------------------------- */
+
+.overview-page-content .institution-intro {
+  animation: cfsl-rise-in 700ms var(--cfsl-ease-out) 80ms both;
+}
+
+.overview-page-content .institution-copy {
+  animation: cfsl-slide-in-left 720ms var(--cfsl-ease-out) 140ms both;
+}
+
+.overview-page-content .institution-photo,
+.overview-page-content .institution-facts {
+  animation: cfsl-slide-in-right 760ms var(--cfsl-ease-out) 190ms both;
+}
+
+.institution-photo,
+.director-portrait,
+.welcome-photo {
+  overflow: hidden;
+}
+
+.institution-photo img,
+.director-portrait img,
+.welcome-photo {
+  transition: transform 900ms var(--cfsl-ease-out), filter 650ms ease;
+}
+
+.institution-photo:hover img,
+.director-portrait:hover img,
+.welcome-photo-wrap:hover .welcome-photo {
+  transform: scale(1.035);
+}
+
+.institution-facts {
+  display: grid;
+}
+
+.institution-fact {
+  transition:
+    background-color var(--cfsl-motion-medium) ease,
+    border-color var(--cfsl-motion-medium) ease,
+    transform var(--cfsl-motion-medium) var(--cfsl-ease-out);
+}
+
+.institution-fact:hover {
+  transform: translateX(4px);
+}
+
+.overview-shortcuts {
+  animation: cfsl-rise-in 700ms var(--cfsl-ease-out) 240ms both;
+}
+
+.overview-shortcut-card {
+  transition:
+    transform 320ms var(--cfsl-ease-out),
+    box-shadow 320ms ease,
+    border-color 320ms ease;
+}
+
+.overview-shortcut-card:hover {
+  transform: translateY(-5px);
+}
+
+/* --------------------------------------------------------------------------
+   About pages, director's desk and general article content
+   -------------------------------------------------------------------------- */
+
+.page-article,
+.institution-intro,
+.director-message-card,
+.director-message-copy {
+  animation: cfsl-rise-in 680ms var(--cfsl-ease-out) both;
+}
+
+.director-message-card {
+  animation-delay: 100ms;
+}
+
+.director-portrait-wrap {
+  animation: cfsl-scale-in 760ms var(--cfsl-ease-out) 100ms both;
+}
+
+.director-nameplate,
+.director-signoff {
+  transition: transform 320ms var(--cfsl-ease-out);
+}
+
+.director-message-card:hover .director-nameplate {
+  transform: translateX(3px);
+}
+
+.institution-role-mark,
+.card-icon,
+.contact-card-icon,
+.rti-resource-icon,
+.rti-officer-icon {
+  transition: transform 360ms var(--cfsl-ease-out), background-color 360ms ease;
+}
+
+.content-card:hover .card-icon,
+.contact-card:hover .contact-card-icon,
+.rti-resource-card:hover .rti-resource-icon {
+  transform: translateY(-3px) rotate(-3deg);
+}
+
+/* --------------------------------------------------------------------------
+   Divisions: directory cards, side navigation and selected detail
+   -------------------------------------------------------------------------- */
+
+.divisions-page-content,
+.divisions-page-grid {
+  animation: cfsl-rise-in 620ms var(--cfsl-ease-out) both;
+}
+
+.division-card-grid,
+.divisions-card-grid {
+  --cfsl-card-stagger: 65ms;
+}
+
+.division-card,
+.content-card.division-card {
+  transition:
+    transform 380ms var(--cfsl-ease-out),
+    box-shadow 380ms ease,
+    border-color 380ms ease;
+}
+
+.division-card:hover,
+.content-card.division-card:hover {
+  transform: translateY(-6px);
+}
+
+.division-card-image {
+  overflow: hidden;
+}
+
+.division-card-image img {
+  transition: transform 850ms var(--cfsl-ease-out), filter 500ms ease;
+}
+
+.division-card:hover .division-card-image img {
+  transform: scale(1.045);
+}
+
+.division-card-content {
+  transition: transform 320ms var(--cfsl-ease-out);
+}
+
+.division-card:hover .division-card-content {
+  transform: translateY(-2px);
+}
+
+.division-card-link,
+.text-link,
+.division-back-button {
+  transition:
+    gap 240ms var(--cfsl-ease-out),
+    color 240ms ease,
+    background-color 240ms ease,
+    transform 240ms var(--cfsl-ease-out);
+}
+
+.division-card-link:hover,
+.text-link:hover {
+  gap: 9px;
+}
+
+.division-side-nav {
+  animation: cfsl-slide-in-left 620ms var(--cfsl-ease-out) 80ms both;
+}
+
+.division-side-nav a,
+.side-nav a {
+  transition: padding-left 240ms var(--cfsl-ease-out), color 240ms ease;
+}
+
+.division-side-nav a:hover,
+.side-nav a:hover {
+  padding-left: 5px;
+}
+
+.division-detail-block {
+  animation: cfsl-rise-in 560ms var(--cfsl-ease-out) both;
+}
+
+.division-detail-block:nth-of-type(1) { animation-delay: 70ms; }
+.division-detail-block:nth-of-type(2) { animation-delay: 130ms; }
+.division-detail-block:nth-of-type(3) { animation-delay: 190ms; }
+.division-detail-block:nth-of-type(4) { animation-delay: 250ms; }
+
+.division-back-button:hover {
+  transform: translateX(-3px);
+}
+
+/* --------------------------------------------------------------------------
+   Services and case-forwarding checklist
+   -------------------------------------------------------------------------- */
+
+.case-checklist-page {
+  animation: cfsl-soft-in 520ms ease-out both;
+}
+
+.case-checklist-shell {
+  animation: cfsl-rise-in 680ms var(--cfsl-ease-out) 70ms both;
+}
+
+.case-checklist-intro {
+  animation: cfsl-slide-in-left 660ms var(--cfsl-ease-out) 100ms both;
+}
+
+.case-checklist-panel {
+  animation: cfsl-scale-in 700ms var(--cfsl-ease-out) 170ms both;
+  transform-origin: top center;
+}
+
+.case-checklist-panel-head {
+  transition: background-color 300ms ease;
+}
+
+.case-checklist-item {
+  transition:
+    background-color 240ms ease,
+    border-color 240ms ease,
+    transform 260ms var(--cfsl-ease-out),
+    box-shadow 260ms ease;
+}
+
+.case-checklist-item:hover {
+  transform: translateX(4px);
+}
+
+.case-checklist-item input {
+  accent-color: var(--forest-green, #315b43);
+}
+
+.case-checklist-button,
+.case-checklist-action-buttons button,
+.button {
+  transition:
+    transform 240ms var(--cfsl-ease-out),
+    box-shadow 240ms ease,
+    background-color 240ms ease,
+    border-color 240ms ease,
+    color 240ms ease;
+}
+
+.case-checklist-button:not(:disabled):hover,
+.case-checklist-action-buttons button:not(:disabled):hover,
+.button:hover {
+  transform: translateY(-2px);
+}
+
+.case-checklist-button:active,
+.case-checklist-action-buttons button:active,
+.button:active {
+  transform: translateY(0);
+}
+
+.case-checklist-status {
+  transition: opacity 220ms ease;
+}
+
+/* --------------------------------------------------------------------------
+   RTI page: process steps, officer panel and resource cards
+   -------------------------------------------------------------------------- */
+
+.rti-page-content {
+  animation: cfsl-rise-in 640ms var(--cfsl-ease-out) both;
+}
+
+.rti-intro {
+  animation-delay: 70ms;
+}
+
+.rti-section {
+  animation: cfsl-rise-in 620ms var(--cfsl-ease-out) both;
+}
+
+.rti-section-heading {
+  animation: cfsl-slide-in-left 620ms var(--cfsl-ease-out) both;
+}
+
+.rti-notice,
+.rti-officer-panel {
+  transition:
+    transform 320ms var(--cfsl-ease-out),
+    box-shadow 320ms ease,
+    border-color 320ms ease;
+}
+
+.rti-notice:hover,
+.rti-officer-panel:hover {
+  transform: translateY(-3px);
+}
+
+.rti-steps > li {
+  transition: background-color 280ms ease, transform 280ms var(--cfsl-ease-out);
+}
+
+.rti-steps > li:hover {
+  transform: translateX(4px);
+}
+
+.rti-step-number {
+  transition: transform 300ms var(--cfsl-ease-out), background-color 300ms ease;
+}
+
+.rti-steps > li:hover .rti-step-number {
+  transform: scale(1.06);
+}
+
+.rti-disclosure-grid > article,
+.rti-resource-card {
+  transition:
+    transform 340ms var(--cfsl-ease-out),
+    box-shadow 340ms ease,
+    border-color 340ms ease;
+}
+
+.rti-disclosure-grid > article:hover,
+.rti-resource-card:hover {
+  transform: translateY(-5px);
+}
+
+.rti-resource-link {
+  transition: gap 240ms var(--cfsl-ease-out), color 240ms ease;
+}
+
+.rti-resource-link:hover {
+  gap: 8px;
+}
+
+/* --------------------------------------------------------------------------
+   Contact page: cards, contact actions and supporting notes
+   -------------------------------------------------------------------------- */
+
+.contact-page-content {
+  animation: cfsl-rise-in 640ms var(--cfsl-ease-out) both;
+}
+
+.contact-intro {
+  animation: cfsl-slide-in-left 640ms var(--cfsl-ease-out) 70ms both;
+}
+
+.contact-cards {
+  animation: cfsl-rise-in 680ms var(--cfsl-ease-out) 140ms both;
+}
+
+.contact-card {
+  transition:
+    transform 340ms var(--cfsl-ease-out),
+    box-shadow 340ms ease,
+    border-color 340ms ease,
+    background-color 340ms ease;
+}
+
+.contact-card:hover {
+  transform: translateY(-5px);
+}
+
+.contact-action {
+  transition: gap 240ms var(--cfsl-ease-out), color 240ms ease;
+}
+
+.contact-action:hover {
+  gap: 8px;
+}
+
+.contact-note,
+.contact-source-note,
+.rti-source-note,
+.rti-small-note {
+  transition: border-color 280ms ease, background-color 280ms ease;
+}
+
+/* --------------------------------------------------------------------------
+   General content cards, article lists and public-facing information
+   -------------------------------------------------------------------------- */
+
+.card-grid {
+  perspective: 1000px;
+}
+
+.card-grid > *,
+.overview-shortcut-grid > *,
+.divisions-card-grid > *,
+.contact-cards > *,
+.rti-disclosure-grid > * {
+  transition:
+    transform 340ms var(--cfsl-ease-out),
+    box-shadow 340ms ease,
+    border-color 340ms ease;
+}
+
+.article-list li {
+  transition: padding-left 220ms var(--cfsl-ease-out), color 220ms ease;
+}
+
+.article-list li:hover {
+  padding-left: 4px;
+}
+
+.public-notice-row {
+  transition: background-color 260ms ease, padding-left 260ms var(--cfsl-ease-out);
+}
+
+.public-notice-row:hover {
+  padding-left: 5px;
+}
+
+/* --------------------------------------------------------------------------
+   Shared header and footer micro-interactions
+   -------------------------------------------------------------------------- */
+
+.nav-link,
+.utility-control,
+.footer-links a,
+.footer-map-link {
+  transition:
+    color 240ms ease,
+    background-color 240ms ease,
+    transform 240ms var(--cfsl-ease-out),
+    opacity 240ms ease;
+}
+
+.nav-link:hover,
+.footer-links a:hover {
+  transform: translateY(-1px);
+}
+
+.dropdown,
+.utility-dropdown,
+.utility-menu {
+  transform-origin: top center;
+}
+
+.dropdown,
+.utility-menu {
+  transition:
+    opacity 220ms ease,
+    transform 260ms var(--cfsl-ease-out),
+    visibility 220ms ease;
+}
+
+.footer-map-frame {
+  transition: box-shadow 360ms ease, transform 360ms var(--cfsl-ease-out);
+}
+
+.footer-map-frame:hover {
+  transform: translateY(-3px);
+}
+
+.footer-brand-mark {
+  transition: transform 500ms var(--cfsl-ease-out);
+}
+
+.footer-brand:hover .footer-brand-mark {
+  transform: translateY(-2px);
+}
+
+/* --------------------------------------------------------------------------
+   Homepage-specific refinements retained from the earlier motion layer
+   -------------------------------------------------------------------------- */
+
+.hero-copy {
+  animation: cfsl-slide-in-left 760ms var(--cfsl-ease-out) 100ms both;
+}
+
+.hero-carousel {
+  animation: cfsl-scale-in 850ms var(--cfsl-ease-out) 140ms both;
+}
+
+.welcome-copy {
+  animation: cfsl-slide-in-left 720ms var(--cfsl-ease-out) 80ms both;
+}
+
+.welcome-photo-wrap {
+  animation: cfsl-slide-in-right 760ms var(--cfsl-ease-out) 140ms both;
+}
+
+.public-notices-card,
+.official-profiles {
+  animation: cfsl-rise-in 700ms var(--cfsl-ease-out) both;
+}
+
+.division-card-grid > .division-card:nth-child(1),
+.division-card-grid > .division-card:nth-child(2),
+.division-card-grid > .division-card:nth-child(3),
+.division-card-grid > .division-card:nth-child(4),
+.division-card-grid > .division-card:nth-child(5),
+.division-card-grid > .division-card:nth-child(6) {
+  animation: cfsl-rise-in 620ms var(--cfsl-ease-out) both;
+}
+
+.division-card-grid > .division-card:nth-child(1) { animation-delay: 50ms; }
+.division-card-grid > .division-card:nth-child(2) { animation-delay: 100ms; }
+.division-card-grid > .division-card:nth-child(3) { animation-delay: 150ms; }
+.division-card-grid > .division-card:nth-child(4) { animation-delay: 200ms; }
+.division-card-grid > .division-card:nth-child(5) { animation-delay: 250ms; }
+.division-card-grid > .division-card:nth-child(6) { animation-delay: 300ms; }
+
+.official-profile {
+  transition: transform 320ms var(--cfsl-ease-out), box-shadow 320ms ease;
+}
+
+.official-profile:hover {
+  transform: translateY(-4px);
+}
+
+/* --------------------------------------------------------------------------
+   Scroll reveal — progressive enhancement only.
+   Browsers without view-timeline support simply show content normally.
+   -------------------------------------------------------------------------- */
+
+@supports (animation-timeline: view()) {
+  .overview-page-content .institution-fact,
+  .overview-shortcut-card,
+  .director-message-card,
+  .division-detail-block,
+  .rti-section,
+  .rti-steps > li,
+  .rti-disclosure-grid > article,
+  .rti-resource-card,
+  .contact-card,
+  .case-checklist-panel,
+  .case-checklist-item,
+  .public-notices-card,
+  .official-profile {
+    animation-name: cfsl-scroll-reveal;
+    animation-duration: 1ms;
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 28%;
+  }
+
+  @keyframes cfsl-scroll-reveal {
+    from { opacity: 0.25; translate: 0 18px; }
+    to { opacity: 1; translate: 0 0; }
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Accessibility: preserve the content and remove non-essential motion
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

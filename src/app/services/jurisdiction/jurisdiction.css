@@ -1,0 +1,34 @@
+/* Jurisdiction page — isolated styles and one-time geographic reveal */
+.jurisdiction-page { padding-block: clamp(36px, 5vw, 72px); }
+.jurisdiction-heading { max-width: 820px; margin-bottom: 28px; animation: jurisdiction-rise 650ms ease-out both; }
+.jurisdiction-heading h2 { margin: 8px 0 10px; font-size: clamp(1.55rem, 2.4vw, 2.2rem); color: #13334c; }
+.jurisdiction-heading p { color: #526574; line-height: 1.7; }
+.jurisdiction-layout { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(300px, 1fr); gap: 26px; align-items: stretch; }
+.jurisdiction-map-panel { background: #f0f4f8; border: 1px solid #dce4eb; border-radius: 15px; overflow: hidden; animation: jurisdiction-rise 700ms 120ms ease-out both; }
+.jurisdiction-map { display: block; width: 100%; height: auto; }
+.jurisdiction-base { filter: grayscale(1); opacity: .39; }
+.jurisdiction-state { stroke: rgba(255,255,255,.85); stroke-width: 1.4; stroke-linejoin: round; opacity: 0; animation: jurisdiction-reveal 650ms cubic-bezier(.22,1,.36,1) forwards; }
+.jurisdiction-state-ap { animation-delay: .55s; }
+.jurisdiction-state-tel { animation-delay: 1.15s; }
+.jurisdiction-state-ka { animation-delay: 1.75s; }
+.jurisdiction-state-ker { animation-delay: 2.35s; }
+.jurisdiction-state-tn { animation-delay: 2.95s; }
+.jurisdiction-territories { opacity: 0; animation: jurisdiction-reveal 650ms 3.55s ease-out forwards; }
+.jurisdiction-location, .jurisdiction-location-label { opacity: 0; animation: jurisdiction-drop 650ms 4.3s cubic-bezier(.2,1.3,.35,1) forwards; }
+.jurisdiction-location-label { animation-name: jurisdiction-reveal; animation-delay: 4.7s; }
+.jurisdiction-pin-pulse { opacity: .25; transform-origin: center; animation: jurisdiction-pulse 1.8s 5.05s ease-out 2; }
+.jurisdiction-map-caption { font-size: .77rem; line-height: 1.5; color: #5d6b75; padding: 10px 16px 15px; }
+.jurisdiction-info { background: #fff; border: 1px solid #dce4eb; border-radius: 15px; padding: clamp(20px, 2.5vw, 32px); box-shadow: 0 10px 35px rgba(15,47,65,.05); animation: jurisdiction-rise 700ms 240ms ease-out both; }
+.jurisdiction-info h3 { font-size: 1.3rem; color: #17384d; margin: 0 0 20px; padding-bottom: 12px; border-bottom: 3px solid #dca63d; }
+.jurisdiction-list { padding: 0; margin: 0; list-style: none; display: grid; gap: 13px; }
+.jurisdiction-list-item { display: flex; align-items: center; gap: 16px; color: #1c3547; font-weight: 550; opacity: 0; animation: jurisdiction-rise 500ms ease-out forwards; animation-delay: calc(.6s + var(--jurisdiction-index) * .48s); }
+.jurisdiction-list-number { width: 42px; height: 42px; display: grid; place-items: center; flex: 0 0 42px; background: var(--jurisdiction-accent); color: #fff; font-weight: 700; border-radius: 5px; }
+.jurisdiction-summary { margin-top: 28px; padding-top: 20px; border-top: 2px solid #dce4eb; color: #17384d; line-height: 1.65; }
+.jurisdiction-summary p { margin-top: 10px; color: #526574; font-size: .93rem; }
+.jurisdiction-disclaimer { margin-top: 18px; font-size: .82rem; line-height: 1.6; color: #657481; }
+@keyframes jurisdiction-reveal { from { opacity: 0; } to { opacity: 1; } }
+@keyframes jurisdiction-rise { from { opacity: 0; translate: 0 16px; } to { opacity: 1; translate: 0 0; } }
+@keyframes jurisdiction-drop { from { opacity: 0; translate: 0 -34px; } to { opacity: 1; translate: 0 0; } }
+@keyframes jurisdiction-pulse { 0% { opacity: .3; scale: .6; } 100% { opacity: 0; scale: 2.3; } }
+@media (max-width: 900px) { .jurisdiction-layout { grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: reduce) { .jurisdiction-page *, .jurisdiction-page *::before, .jurisdiction-page *::after { animation: none !important; transition: none !important; } .jurisdiction-state, .jurisdiction-territories, .jurisdiction-location, .jurisdiction-location-label, .jurisdiction-list-item { opacity: 1 !important; } }

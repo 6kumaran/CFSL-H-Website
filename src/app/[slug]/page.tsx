@@ -564,8 +564,8 @@ function OverviewContent() {
             <span className="institution-fact-icon"><Award size={22} aria-hidden="true" /></span>
             <div>
               <span className="institution-fact-label">Accreditation wording on signboard</span>
-              <h3>ISO/IEC 17025 (2005)</h3>
-              <p>The signboard displays “An ISO - IEC 17025 (2005) Accredited Laboratory.” Current accreditation status and applicable standard edition should be verified before publication as a current claim.</p>
+              <h3>ISO/IEC 17025 (2017)</h3>
+              <p>The signboard displays “An ISO - IEC 17025 (2017) Accredited Laboratory.” Current accreditation status and applicable standard edition should be verified before publication as a current claim.</p>
             </div>
           </article>
         </div>

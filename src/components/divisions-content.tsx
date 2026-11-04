@@ -14,7 +14,7 @@ type DivisionDetail = {
 
 const divisionDetails: Record<string, DivisionDetail> = {
   "Digital Forensics": {
-    hod: "Smt. Maheshwari",
+    hod: "Dr. Maheshwari",
     overview:
       "Digital forensics concerns the scientific examination of digital devices and electronic evidence to help establish relevant facts in an investigation. The exact scope depends on the evidence received and the laboratory's confirmed capabilities.",
     history:
@@ -30,7 +30,7 @@ const divisionDetails: Record<string, DivisionDetail> = {
   },
 
   "Physical Sciences": {
-    hod: "Smt. Maheshwari",
+    hod: "Dr. Maheshwari",
     overview:
       "Physical-science examinations apply scientific methods to relevant physical evidence. This section is presented as a general overview; the laboratory's precise organisational structure and scope should be confirmed.",
     history:
@@ -46,7 +46,7 @@ const divisionDetails: Record<string, DivisionDetail> = {
   },
 
   "Ballistics": {
-    hod: "Smt. Maheshwari",
+    hod: "Dr. Maheshwari",
     overview:
       "Forensic ballistics examines firearms-related evidence using scientific methods. The exact examinations offered by CFSL Hyderabad should be confirmed before publishing a definitive service list.",
     history:
@@ -124,6 +124,22 @@ const divisionDetails: Record<string, DivisionDetail> = {
     facilities:
       "Specific research programmes, collaborations and dedicated facilities should be added only after verification.",
   },
+
+  "Psychological Forensics": {
+    hod: "To be confirmed",
+    overview:
+    "Psychological forensics applies scientific methods to the assessment of psychological aspects relevant to investigations.",
+    history:
+      "The establishment history and milestones of this section need official confirmation.",
+    work: [
+      "Scientific assessment of psychological aspects within the approved scope.",
+      "Application of suitable psychological evaluation methods.",
+      "Documentation of observations and findings.",
+      "Preparation of reports for the referring authority.",
+    ],
+    facilities:
+      "Specific psychological assessment tools, facilities and examination capabilities require confirmation from the laboratory.",
+  },
 };
 
 /*
@@ -142,6 +158,7 @@ const divisionDetailKeyMap: Record<string, string> = {
   "Questioned Documents": "Questioned Documents",
   "Ballistics Forensics": "Ballistics",
   "Research & Development": "Research & Development",
+  "Psychological Forensics": "Psychological Forensics",
 };
 
 const fallbackDetail: DivisionDetail = {
@@ -185,6 +202,8 @@ const divisionDescriptions: Record<string, string> = {
     "Examination of suspected narcotic and drug-related substances.",
   "Toxicology Forensics":
     "Scientific examination of toxic substances and related evidence.",
+  "Psychological Forensics":
+    "Scientific examination of psychological aspects related to forensic investigations.",
 };
 
 const divisionImages: Record<string, string> = {
@@ -198,6 +217,7 @@ const divisionImages: Record<string, string> = {
   "DNA Forensics": "/images/divisions/dna-forensics.jpg",
   "Narcotics & Drugs Forensics": "/images/divisions/narcotics.jpg",
   "Toxicology Forensics": "/images/divisions/toxicology.jpg",
+  "Psychological Forensics": "/images/divisions/toxicology.jpg",
 };
 
 export default function DivisionsContent() {

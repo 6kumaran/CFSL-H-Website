@@ -136,11 +136,11 @@ function HomeContent() {
         <aside className="official-profiles" aria-label="Government officials">
           <div className="official-profile">
             <div className="official-avatar avatar-governor" aria-hidden="true"><img src="/DFSS_Chief.jpg" alt="Director" /></div>
-            <div><strong>Shri S. K. Jain</strong><span>Director-cum-Chief Forensic Scientist <br/> Directorate of Forensic Science Services<br/> Ministry of Home Affairs,<br/> Govt. of India<br/> New Delhi</span></div>
+            <div><strong>Dr. S. K. Jain</strong><span>Director-cum-Chief Forensic Scientist <br/> Directorate of Forensic Science Services<br/> Ministry of Home Affairs,<br/> Govt. of India<br/> New Delhi</span></div>
           </div>
           <div className="official-profile">
             <div className="official-avatar avatar-governor" aria-hidden="true"><img src="/CFSL_HYD_Director_1.jpeg" alt="Director" /></div>
-            <div><strong>Shri Deepak Midha</strong><span>Director Central Forensic Science Laboratory<br/> Directorate of Forensic Science Services<br/> Ministry of Home Affairs,<br/> Govt. of India<br/> Hyderabad</span></div>
+            <div><strong>Dr. Deepak Midha</strong><span>Director Central Forensic Science Laboratory<br/> Directorate of Forensic Science Services<br/> Ministry of Home Affairs,<br/> Govt. of India<br/> Hyderabad</span></div>
           </div>
           
         </aside>

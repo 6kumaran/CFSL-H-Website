@@ -9,7 +9,7 @@ export const navigation: NavItem[] = [
     label: "About Us",
     href: "/about",
     children: [
-  { label: "Citizen Charter", href: "/charter" },
+  { label: "Quality Policy", href: "/qualityPolicy" },
   { label: "Greetings From The Director", href: "/director" },
   { label: "Acknowledgement", href: "/acknowledgement" },
   { label: "Prominent Cases", href: "/cases" },
@@ -24,6 +24,7 @@ export const navigation: NavItem[] = [
     href: "/services",
     children: [
       { label: "Services Overview", href: "/services" },
+      {label: "Jurisdiction", href: "/services/jurisdiction"},
       { label: "Case Forwarding Checklist", href: "/services/case-forwarding-checklist" },
     ],
   },
@@ -31,12 +32,9 @@ export const navigation: NavItem[] = [
     label: "Notice Board",
     href: "/notices",
     children: [
-      { label: "What's New", href: "/notices" },
       { label: "Latest News", href: "/notices" },
       { label: "Vacancy", href: "/notices" },
-      { label: "Related Links", href: "/notices" },
       { label: "Important Links", href: "/notices" },
-      { label: "Vigilance Complaint Information Management System (VCIMS)", href: "/notices" },
     ],
   },
   { label: "RTI", href: "/rti" },
@@ -61,6 +59,7 @@ export const divisions = [
   { icon: "⌁", title: "DNA Forensics", description: "A placeholder for research, training, collaboration and development activities.", href: "/divisions" },
   { icon: "⌁", title: "Narcotics & Drugs Forensics", description: "A placeholder for research, training, collaboration and development activities.", href: "/divisions" },
   { icon: "⌁", title: "Toxicology Forensics", description: "A placeholder for research, training, collaboration and development activities.", href: "/divisions" },
+  { icon: "⌁", title: "Psychological Forensics", description: "A placeholder for research, training, collaboration and development activities.", href: "/divisions" },
 ];
 
 export const notices = [
@@ -96,18 +95,21 @@ export const pages: Record<string, { title: string; intro: string; heading: stri
   ],
 },
   contact: { title: "Contact the Laboratory", intro: "Official address and publicly listed communication channels for CFSL Hyderabad.", heading: "Contact information", paragraphs: ["The contact page provides the laboratory address and a publicly listed institutional email. Telephone numbers, office hours and visitor requirements should be confirmed through current official channels before a visit."], bullets: ["Confirm the current procedure before forwarding evidence", "Do not send confidential case material to an unverified email address", "Check the official website for current notices and contact updates"] },
-  charter: {
-  title: "Citizen Charter",
-  intro: "Our commitment to transparent, professional and timely public service.",
-  heading: "Citizen Charter",
+  qualityPolicy: {
+  title: "Quality Policy",
+  intro:
+    "Committed to providing the highest quality forensic services to the public, law enforcement agencies and the criminal justice system.",
+  heading: "Quality Policy",
   paragraphs: [
-    "The official Citizen’s Charter and its service standards will be published here after the approved source document is provided and verified.",
-    "This page will present the laboratory’s service commitments, applicable procedures, expected timelines where officially specified, and the appropriate channels for feedback or grievances.",
+    "Central Forensic Science Laboratory, Hyderabad is committed to provide the highest quality service available to the public, law enforcement agencies and members of the criminal justice system.",
+    "To meet this goal, CFSL, Hyderabad has established a quality system in accordance with ISO/IEC 17025:2017 guidelines, to ensure that the Laboratory provides accurate, impartial, consistent and relevant reports to law enforcement and criminal justice organizations.",
   ],
   bullets: [
-    "Service commitments and standards — official details to be added",
-    "Case submission and communication procedures — to be verified",
-    "Feedback and grievance channels — to be verified",
+    "Accuracy — Providing accurate forensic examination results and reports.",
+    "Impartiality — Maintaining impartiality in forensic analysis and reporting.",
+    "Consistency — Ensuring consistent quality in laboratory services.",
+    "Relevance — Providing relevant reports to law enforcement and criminal justice organizations.",
+    "Quality Standards — Maintaining a quality system in accordance with ISO/IEC 17025:2017 guidelines.",
   ],
 },
 director: {
