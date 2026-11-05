@@ -122,7 +122,7 @@ const componentContentEntries: SearchEntry[] = [
     category: "Scientific division",
   },
   {
-    title: "Physical Sciences division",
+    title: "Physics Forensics division",
     description:
       "Scientific examination of physical evidence measurement comparison analytical methods observations and technical findings.",
     href: "/divisions",

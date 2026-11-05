@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowUpRight, BookOpen, ExternalLink, Landmark, Mail, MapPin, ShieldCheck } from "lucide-react";
+import { ArrowUpRight, BookOpen, ExternalLink, Landmark, Mail, MapPin, Phone, ShieldCheck } from "lucide-react";
 
 export function SiteFooter() {
   return (
@@ -13,8 +13,7 @@ export function SiteFooter() {
             <span>Central Forensic Science Laboratories</span>
           </div>
           <p className="footer-copy">
-            Directorate of Forensic Science Services. This website is a concept using sample content;
-            institutional information should be verified before publication.
+            Directorate of Forensic Science Services. 
           </p>
         </section>
 
@@ -36,6 +35,7 @@ export function SiteFooter() {
             <li><MapPin size={16} aria-hidden="true" /><span>CFSL Hyderabad, Telangana, India</span></li>
             <li><Mail size={16} aria-hidden="true" /><span>Official contact details to be added after verification</span></li>
             <li><ShieldCheck size={16} aria-hidden="true" /><Link href="/rti"><div className="flex">Right to Information <ArrowUpRight size={13} aria-hidden="true" /></div></Link></li>
+            <li><Phone size={16} aria-hidden="true" /><span>+91-04-2703 8429</span></li>
           </ul>
         </section>
 
@@ -62,7 +62,7 @@ export function SiteFooter() {
       </div>
 
       <div className="site-container footer-bottom">
-        <span>© {new Date().getFullYear()} CFSL Hyderabad website concept</span>
+        <span>© {new Date().getFullYear()} CFSL Hyderabad</span>
         <span className="footer-bottom-note">Last Updated : </span>
         <a href="#top" aria-label="Back to top">Back to top ↑</a>
       </div>

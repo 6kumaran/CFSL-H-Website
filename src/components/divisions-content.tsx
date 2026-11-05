@@ -29,7 +29,7 @@ const divisionDetails: Record<string, DivisionDetail> = {
       "Specific forensic tools, supported devices, laboratory facilities and examination capabilities should be added after verification.",
   },
 
-  "Physical Sciences": {
+  "Physics Sciences": {
     hod: "Dr. Maheshwari",
     overview:
       "Physical-science examinations apply scientific methods to relevant physical evidence. This section is presented as a general overview; the laboratory's precise organisational structure and scope should be confirmed.",
@@ -148,8 +148,7 @@ const divisionDetails: Record<string, DivisionDetail> = {
  */
 const divisionDetailKeyMap: Record<string, string> = {
   "Digital Forensics": "Digital Forensics",
-  "Physics Forensics": "Physical Sciences",
-  "Physical Sciences": "Physical Sciences",
+  "Physics Forensics": "Physics Sciences",
   "Chemical Forensics": "Chemical Sciences",
   "Chemical Sciences": "Chemical Sciences",
   "Biology Forensics": "Biological Sciences",
@@ -178,8 +177,6 @@ const divisionDescriptions: Record<string, string> = {
     "Examination of digital devices and electronic evidence.",
   "Physics Forensics":
     "Scientific examination of physical evidence using suitable methods.",
-  "Physical Sciences":
-    "Scientific examination and analysis of physical evidence.",
   "Chemical Forensics":
     "Analysis and characterisation of chemical substances and residues.",
   "Chemical Sciences":
@@ -207,17 +204,17 @@ const divisionDescriptions: Record<string, string> = {
 };
 
 const divisionImages: Record<string, string> = {
-  "Digital Forensics": "/images/divisions/digital-forensics.jpg",
-  "Physics Forensics": "/images/divisions/physics-forensics.jpg",
-  "Chemical Forensics": "/images/divisions/chemical-forensics.jpg",
-  "Biology Forensics": "/images/divisions/biology-forensics.jpg",
-  "Questioned Documents": "/images/divisions/questioned-documents.jpg",
-  "Explosive Forensics": "/images/divisions/explosive-forensics.jpg",
-  "Ballistics Forensics": "/images/divisions/ballistics.jpg",
-  "DNA Forensics": "/images/divisions/dna-forensics.jpg",
-  "Narcotics & Drugs Forensics": "/images/divisions/narcotics.jpg",
-  "Toxicology Forensics": "/images/divisions/toxicology.jpg",
-  "Psychological Forensics": "/images/divisions/toxicology.jpg",
+  "Digital Forensics": "/images/divisions/digital-forensics.png",
+  "Physics Forensics": "/images/divisions/physics-forensics.png",
+  "Chemical Forensics": "/images/divisions/chemical-forensics.png",
+  "Biology Forensics": "/images/divisions/biology-forensics.png",
+  "Questioned Documents": "/images/divisions/questioned-documents.png",
+  "Explosive Forensics": "/images/divisions/explosive-forensics.png",
+  "Ballistics Forensics": "/images/divisions/ballistics.png",
+  "DNA Forensics": "/images/divisions/dna-forensics.png",
+  "Narcotics & Drugs Forensics": "/images/divisions/narcotics.png",
+  "Toxicology Forensics": "/images/divisions/toxicology.png",
+  "Psychological Forensics": "/images/divisions/psychological-forensics.png",
 };
 
 export default function DivisionsContent() {
