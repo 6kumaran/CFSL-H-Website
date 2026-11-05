@@ -30,11 +30,11 @@ export const navigation: NavItem[] = [
   },
   {
     label: "Notice Board",
-    href: "/notices",
+    href: "/notices/latest-news",
     children: [
-      { label: "Latest News", href: "/notices" },
-      { label: "Vacancy", href: "/notices" },
-      { label: "Important Links", href: "/notices" },
+      { label: "Latest News", href: "/notices/latest-news" },
+      { label: "Vacancy", href: "/notices/vacancy" },
+      { label: "Important Links", href: "/notices/important-links" },
     ],
   },
   { label: "RTI", href: "/rti" },
