@@ -2146,3 +2146,288 @@ body.high-contrast .site-header .brand-emblem img {
     height: 210px;
   }
 }
+
+
+/* Case Forwarding Letter */
+.case-forwarding-letter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px;
+  border: 1px solid var(--border-color, #deded5);
+  border-radius: 10px;
+}
+
+.case-forwarding-letter-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  min-width: 0;
+}
+
+.case-forwarding-pdf-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  border-radius: 9px;
+  color: #a53d35;
+  background: rgba(165, 61, 53, 0.09);
+}
+
+.case-forwarding-letter-details {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.case-forwarding-letter-title {
+  font-weight: 650;
+  color: var(--text-primary, inherit);
+  text-decoration: none;
+}
+
+.case-forwarding-letter-title:hover {
+  text-decoration: underline;
+  color: var(--accent-color, #426b50);
+}
+
+.case-forwarding-letter-details span {
+  font-size: 0.84rem;
+  color: var(--text-secondary, #777);
+}
+
+/* Document Requirements */
+.case-forwarding-requirements {
+  padding-left: 24px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.case-forwarding-requirements li {
+  padding-left: 7px;
+}
+
+.case-forwarding-requirements li::marker {
+  color: var(--accent-color, #426b50);
+}
+
+.case-forwarding-requirements li strong {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 650;
+}
+
+.case-forwarding-requirements li span {
+  display: block;
+  color: var(--text-secondary, #777);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+/* Sample ZIP Download */
+.case-forwarding-download {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.case-forwarding-download > div {
+  flex: 1;
+}
+
+.case-forwarding-download p {
+  margin: 7px 0 0;
+  color: var(--text-secondary, #777);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.case-forwarding-download .case-checklist-button {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .case-forwarding-letter {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .case-forwarding-download {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .case-forwarding-download .case-checklist-button {
+    width: 100%;
+  }
+}
+
+/* =========================================
+   CASE FORWARDING LETTER
+========================================= */
+
+.case-forwarding-letter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px 24px;
+  border: 1px solid var(--border-color, #deded5);
+  border-radius: 10px;
+}
+
+.case-forwarding-letter-open {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex: 1;
+  min-width: 0;
+  padding: 5px;
+  border-radius: 8px;
+  color: inherit;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+.case-forwarding-letter-open:hover {
+  background: rgba(18, 74, 53, 0.06);
+}
+
+.case-forwarding-pdf-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  border-radius: 9px;
+  color: #a53d35;
+  background: rgba(165, 61, 53, 0.09);
+}
+
+.case-forwarding-letter-details {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.case-forwarding-letter-details strong {
+  font-weight: 650;
+  color: var(--text-primary, #193c2e);
+}
+
+.case-forwarding-letter-details small {
+  font-size: 0.84rem;
+  color: var(--text-secondary, #777);
+}
+
+.case-forwarding-letter-open:hover
+.case-forwarding-letter-details strong {
+  text-decoration: underline;
+}
+
+
+/* =========================================
+   DOCUMENT REQUIREMENTS - BULLET POINTS
+========================================= */
+
+.case-forwarding-requirements {
+  list-style-type: disc !important;
+  list-style-position: outside !important;
+  padding-left: 28px !important;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.case-forwarding-requirements li {
+  display: list-item !important;
+  padding-left: 6px;
+  margin: 0;
+}
+
+.case-forwarding-requirements li::marker {
+  color: var(--accent-color, #124a35);
+  font-size: 1.1em;
+}
+
+.case-forwarding-requirements li strong {
+  display: block !important;
+  margin-bottom: 5px;
+  font-weight: 650;
+  color: var(--text-primary, #193c2e);
+}
+
+.case-forwarding-requirements li span {
+  display: block !important;
+  color: var(--text-secondary, #777);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+
+/* =========================================
+   SAMPLE ZIP DOWNLOAD - RIGHT ALIGNMENT
+========================================= */
+
+.case-forwarding-download {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+}
+
+.case-forwarding-download .case-checklist-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  flex-shrink: 0;
+}
+
+
+/* =========================================
+   MOBILE RESPONSIVENESS
+========================================= */
+
+@media (max-width: 640px) {
+  .case-forwarding-letter {
+    gap: 12px;
+    padding: 15px;
+  }
+
+  .case-forwarding-letter .case-checklist-button {
+    padding: 10px;
+    font-size: 0.8rem;
+  }
+
+  .case-forwarding-letter-open {
+    gap: 10px;
+  }
+
+  .case-forwarding-pdf-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .case-forwarding-download {
+    justify-content: stretch;
+  }
+
+  .case-forwarding-download .case-checklist-button {
+    width: 100%;
+  }
+}

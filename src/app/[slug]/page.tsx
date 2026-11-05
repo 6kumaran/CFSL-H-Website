@@ -491,11 +491,6 @@ function DirectorContent() {
               <br />
               Director, CFSL Hyderabad
             </p>
-
-            <p className="director-draft-note">
-              General draft message — subject to review and approval
-              before publication.
-            </p>
           </div>
         </article>
       </div>

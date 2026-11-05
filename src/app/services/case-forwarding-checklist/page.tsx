@@ -1,6 +1,7 @@
+
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import JSZip from "jszip";
 
@@ -12,104 +13,116 @@ type CaseDocument = {
   path: string;
 };
 
-// Demo mappings only. Add case-specific groups here after requirements are confirmed.
-const caseTypes = [
-  { value: "general", label: "General case forwarding" },
-];
-
+// Sample documents included in the ZIP download.
 const documents: CaseDocument[] = [
-  {
-    id: "forwarding-letter",
-    title: "Forwarding Letter",
-    description: "Demo template for the forwarding letter accompanying a case submission.",
-    filename: "forwarding-letter.docx",
-    path: "/documents/case-forwarding/forwarding-letter.docx",
-  },
   {
     id: "case-opening",
     title: "Case Opening",
-    description: "Demo document labelled Case Opening.",
+    description: "Sample case opening document.",
     filename: "case-opening.docx",
     path: "/documents/case-forwarding/case-opening.docx",
   },
   {
     id: "case-fir",
     title: "Case / FIR",
-    description: "Demo document labelled Case / FIR.",
+    description: "Sample Case / FIR document.",
     filename: "case-fir.docx",
     path: "/documents/case-forwarding/case-fir.docx",
   },
   {
     id: "chain-of-custody",
     title: "Chain of Custody",
-    description: "Demo document labelled Chain of Custody.",
+    description: "Sample chain of custody document.",
     filename: "chain-of-custody.docx",
     path: "/documents/case-forwarding/chain-of-custody.docx",
   },
 ];
 
+const forwardingLetterPath =
+  "/documents/case-forwarding/Case_Forwarding_Letter.pdf";
+
 export default function CaseForwardingChecklistPage() {
-  const [caseType, setCaseType] = useState(caseTypes[0].value);
-  const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [isPreparing, setIsPreparing] = useState(false);
   const [status, setStatus] = useState("");
-  const visibleDocuments = useMemo(() => documents, [caseType]);
-  const allSelected = visibleDocuments.length > 0 && visibleDocuments.every((doc) => selectedIds.includes(doc.id));
-
-  const toggleDocument = (id: string, checked: boolean) => {
-    setSelectedIds((current) => checked ? [...new Set([...current, id])] : current.filter((item) => item !== id));
-    setStatus("");
-  };
-
-  const toggleAll = () => {
-    setSelectedIds(allSelected ? [] : visibleDocuments.map((doc) => doc.id));
-    setStatus("");
-  };
 
   const downloadZip = async () => {
-    const chosen = visibleDocuments.filter((doc) => selectedIds.includes(doc.id));
-    if (!chosen.length) {
-      setStatus("Select at least one document before creating the ZIP file.");
-      return;
-    }
-
     setIsPreparing(true);
-    setStatus("Preparing your ZIP file…");
+    setStatus("Preparing sample documents…");
+
     try {
       const zip = new JSZip();
-      const folder = zip.folder("Case-Forwarding-Documents");
-      if (!folder) throw new Error("Could not create the ZIP folder.");
+      const folder = zip.folder("CFSL-Case-Forwarding-Samples");
 
-      const results = await Promise.all(chosen.map(async (doc) => {
-        const response = await fetch(doc.path);
-        if (!response.ok) throw new Error(`Could not load ${doc.title}. Please try again.`);
-        return { doc, blob: await response.blob() };
-      }));
+      if (!folder) {
+        throw new Error("Could not create the ZIP folder.");
+      }
 
-      for (const { doc, blob } of results) folder.file(doc.filename, blob);
+      // Fetch all sample documents.
+      const results = await Promise.all(
+        documents.map(async (doc) => {
+          const response = await fetch(doc.path);
+
+          if (!response.ok) {
+            throw new Error(
+              `Could not load ${doc.title}. Please try again.`
+            );
+          }
+
+          return {
+            doc,
+            blob: await response.blob(),
+          };
+        })
+      );
+
+      // Add documents to ZIP.
+      for (const { doc, blob } of results) {
+        folder.file(doc.filename, blob);
+      }
+
+      // Include a reference checklist.
       const checklist = [
-        "CASE FORWARDING DOCUMENT CHECKLIST",
-        `Case category: ${caseTypes.find((item) => item.value === caseType)?.label ?? caseType}`,
+        "CFSL HYDERABAD - CASE FORWARDING",
+        "SAMPLE DOCUMENTS",
+        "",
+        "Documents included:",
+        ...documents.map((doc, index) => `${index + 1}. ${doc.title}`),
+        "",
         `Prepared on: ${new Date().toLocaleString()}`,
         "",
-        "Selected demo files:",
-        ...chosen.map((doc) => `- ${doc.title} (${doc.filename})`),
-        "",
-        "Note: These are demonstration documents. Confirm applicable requirements and use approved official templates before forwarding a case.",
+        "Note: These are sample documents provided for reference.",
+        "Please verify the applicable official requirements before",
+        "forwarding a case to CFSL Hyderabad.",
       ].join("\n");
-      folder.file("Selected-Documents-Checklist.txt", checklist);
-      const blob = await zip.generateAsync({ type: "blob" });
+
+      folder.file("Readme-Document-Checklist.txt", checklist);
+
+      // Generate ZIP.
+      const blob = await zip.generateAsync({
+        type: "blob",
+      });
+
       const url = URL.createObjectURL(blob);
       const anchor = document.createElement("a");
+
       anchor.href = url;
-      anchor.download = "CFSL-Case-Forwarding-Documents.zip";
+      anchor.download = "CFSL-Case-Forwarding-Sample-Documents.zip";
+
       document.body.appendChild(anchor);
       anchor.click();
       anchor.remove();
-      URL.revokeObjectURL(url);
-      setStatus(`ZIP created successfully with ${chosen.length} document${chosen.length === 1 ? "" : "s"}.`);
+
+      window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+      setStatus(
+        "Sample ZIP downloaded successfully."
+      );
     } catch (error) {
-      setStatus(error instanceof Error ? error.message : "The ZIP could not be created. Please try again.");
+      setStatus(
+        error instanceof Error
+          ? error.message
+          : "The ZIP could not be created. Please try again."
+      );
     } finally {
       setIsPreparing(false);
     }
@@ -117,76 +130,212 @@ export default function CaseForwardingChecklistPage() {
 
   return (
     <main>
+      {/* Page Banner */}
       <section className="page-banner">
         <div className="site-container page-banner-inner">
           <nav className="breadcrumbs" aria-label="Breadcrumbs">
-            <Link href="/">Home</Link><span aria-hidden="true">/</span><Link href="/services">Services</Link><span aria-hidden="true">/</span><span>Case Forwarding Checklist</span>
+            <Link href="/">Home</Link>
+            <span aria-hidden="true">/</span>
+            <Link href="/services">Services</Link>
+            <span aria-hidden="true">/</span>
+            <span>Case Forwarding Checklist</span>
           </nav>
+
           <h1>Case Forwarding Checklist</h1>
-          <p>Choose the documents you need and download them together in one ZIP file.</p>
+
+          <p>
+            Guidelines and document requirements for forwarding
+            cases to CFSL Hyderabad.
+          </p>
         </div>
       </section>
 
+      {/* Main Content */}
       <section className="case-checklist-page">
         <div className="case-checklist-shell">
+
+          {/* Introduction */}
           <div className="case-checklist-intro">
-            <span className="case-checklist-eyebrow">A practical document preparation tool</span>
-            <h1>Prepare your case documents</h1>
-            <p>Select the relevant documents below. Only the files you select will be included in the ZIP download.</p>
+            <span className="case-checklist-eyebrow">
+              Case Forwarding Guidelines
+            </span>
+
+            <h1>Documents Required for Case Forwarding</h1>
+
+            <p>
+              Before forwarding a case to the Central Forensic
+              Science Laboratory, Hyderabad, please refer to the
+              following document requirements and prepare the
+              necessary supporting documents.
+            </p>
           </div>
 
           <div className="case-checklist-panel">
+
+            {/* Section 1: Forwarding Letter */}
             <div className="case-checklist-panel-head">
-              <h2>Step 1 · Choose case category</h2>
-              <p>The current demo contains general case-forwarding documents. More categories can be added once their document requirements are confirmed.</p>
+              <h2>1. Case Forwarding Letter</h2>
+              <p>
+                Refer to the sample case forwarding letter
+                provided below.
+              </p>
             </div>
+
             <div className="case-checklist-body">
-              <div className="case-checklist-field">
-                <label htmlFor="case-type">Type of case</label>
-                <select id="case-type" className="case-checklist-select" value={caseType} onChange={(event) => { setCaseType(event.target.value); setStatus(""); }}>
-                  {caseTypes.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}
-                </select>
+              
+<div className="case-forwarding-letter">
+  <a
+    href={forwardingLetterPath}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="case-forwarding-letter-open"
+    aria-label="Open Case Forwarding Letter PDF in a new tab"
+  >
+    <span className="case-forwarding-pdf-icon">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="27"
+        height="27"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.7"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+        <path d="M14 2v6h6" />
+        <path d="M8 13h8" />
+        <path d="M8 17h8" />
+      </svg>
+    </span>
+
+    <span className="case-forwarding-letter-details">
+      <strong>Case Forwarding Letter.pdf</strong>
+      <small>PDF Document</small>
+    </span>
+  </a>
+
+  <a
+    href={forwardingLetterPath}
+    download="Case_Forwarding_Letter.pdf"
+    className="case-checklist-button secondary"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="17"
+      height="17"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+      <path d="m7 10 5 5 5-5" />
+      <path d="M12 15V3" />
+    </svg>
+    Download PDF
+  </a>
+</div>
+
+            </div>
+
+            {/* Section 2: Document Requirements */}
+            <div className="case-checklist-panel-head">
+              <h2>2. Documents Required</h2>
+              <p>
+                The following supporting documents should be
+                prepared for case forwarding.
+              </p>
+            </div>
+
+            
+<div className="case-checklist-body">
+  <ul className="case-forwarding-requirements">
+    <li>
+      <strong>Case Opening Document</strong>
+      <span>
+        Relevant case opening details and information.
+      </span>
+    </li>
+
+    <li>
+      <strong>Case / FIR Copy</strong>
+      <span>
+        A copy of the relevant case details or FIR.
+      </span>
+    </li>
+
+    <li>
+      <strong>Chain of Custody Document</strong>
+      <span>
+        Documentation relating to the handling and transfer
+        of submitted exhibits or evidence.
+      </span>
+    </li>
+  </ul>
+</div>
+
+            <div className="case-checklist-body">
+              <div className="case-forwarding-download">
+
+
+                <button
+                  type="button"
+                  className="case-checklist-button"
+                  onClick={downloadZip}
+                  disabled={isPreparing}
+                >
+                  {isPreparing ? (
+                    "Preparing ZIP…"
+                  ) : (
+                    <>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="18"
+                        height="18"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        aria-hidden="true"
+                      >
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <path d="m7 10 5 5 5-5" />
+                        <path d="M12 15V3" />
+                      </svg>
+                      Download Sample ZIP
+                    </>
+                  )}
+                </button>
               </div>
 
-              <div className="case-checklist-note">
-                These filenames and documents are supplied as demo materials. The page does not currently mark any item as officially mandatory.
-              </div>
-
-              <div className="case-checklist-list-head">
-                <h2>Step 2 · Select documents</h2>
-                <span className="case-checklist-selection" aria-live="polite">{selectedIds.filter((id) => visibleDocuments.some((doc) => doc.id === id)).length} of {visibleDocuments.length} selected</span>
-              </div>
-
-              <div className="case-checklist-items">
-                {visibleDocuments.map((doc) => (
-                  <label className="case-checklist-item" key={doc.id}>
-                    <input type="checkbox" checked={selectedIds.includes(doc.id)} onChange={(event) => toggleDocument(doc.id, event.target.checked)} />
-                    <span>
-                      <strong>{doc.title}</strong>
-                      <small>{doc.description}</small>
-                      <span className="case-checklist-filetype">Word document · .docx</span>
-                    </span>
-                  </label>
-                ))}
-              </div>
-
-              <div className="case-checklist-actions">
-                <div>
-                  <strong>Step 3 · Download selected files</strong>
-                  <div className="case-checklist-selection">Your ZIP will also include a text checklist of the files selected.</div>
-                </div>
-                <div className="case-checklist-action-buttons">
-                  <button type="button" className="case-checklist-button secondary" onClick={toggleAll}>{allSelected ? "Clear selection" : "Select all"}</button>
-                  <button type="button" className="case-checklist-button" onClick={downloadZip} disabled={selectedIds.length === 0 || isPreparing}>
-                    {isPreparing ? "Preparing ZIP…" : "Download selected (.ZIP)"}
-                  </button>
-                </div>
-              </div>
-              <p className="case-checklist-status" role="status" aria-live="polite">{status}</p>
+              <p
+                className="case-checklist-status"
+                role="status"
+                aria-live="polite"
+              >
+                {status}
+              </p>
             </div>
           </div>
 
-          <p className="case-checklist-disclaimer"><strong>Please note:</strong> This is a demonstration tool using sample documents. Verify the current instructions and applicable document requirements issued by CFSL Hyderabad before forwarding a case. The checklist does not replace official guidance.</p>
+          {/* Disclaimer */}
+          <p className="case-checklist-disclaimer">
+            <strong>Please note:</strong> The documents provided
+            are sample materials for reference purposes only.
+            Please verify the latest applicable instructions
+            and document requirements issued by CFSL Hyderabad
+            before forwarding a case. This page does not replace
+            official guidance.
+          </p>
+
         </div>
       </section>
     </main>
