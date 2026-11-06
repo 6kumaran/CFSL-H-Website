@@ -36,7 +36,7 @@
   --foreground: var(--ink);
 
   /* Fonts — change these two lines to restyle all typography */
-  --font-heading: "Triakis", Georgia, "Times New Roman", serif;
+  --font-heading: "Electrolize", sans-serif;
   --font-body: "Bariol", Arial, Helvetica, sans-serif;
 
   color-scheme: light;
@@ -77,9 +77,9 @@ button, a { -webkit-tap-highlight-color: transparent; }
 }
 
 @font-face {
-  font-family: "Triakis";
-  src: url("/fonts/TriakisRegularFreeWeight/Opentype/TriakisFont-Regular.otf")
-    format("opentype");
+  font-family: "Electrolize";
+  src: url("/fonts/Electrolize/Electrolize-Regular.ttf")
+    format("truetype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -359,7 +359,6 @@ body h6 {
 .hero-carousel-frame {
   position: relative; isolation: isolate; overflow: hidden; aspect-ratio: 4 / 3; min-height: 300px;
   border: 0; border-radius: 0; background: var(--green-deep);
-  clip-path: polygon(14% 0, 100% 0, 100% 100%, 0 100%);
 }
 .hero-carousel-slide { position: absolute; inset: 0; opacity: 0; visibility: hidden; transform: scale(1.025); transition: opacity .65s ease, transform 1.2s ease, visibility .65s ease; }
 .hero-carousel-slide.is-active { opacity: 1; visibility: visible; transform: scale(1); }
@@ -752,7 +751,7 @@ body.cfsl-splash-active { overflow: hidden; }
 .side-nav-heading { display: block; padding: 10px 12px 12px; color: var(--saffron-dark); font-size: .72rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
 .division-side-nav a { border-radius: 8px; padding: 12px; line-height: 1.45; }
 .division-side-nav a:hover { background: var(--cream-deep); color: var(--green-deep); }
-.divisions-article > p { max-width: 900px; }
+.divisions-article > p { max-width: 900px; text-align: justify; text-justify: inter-word; }
 .divisions-card-grid { margin-top: 26px; align-items: stretch; }
 .division-card { min-height: 225px; scroll-margin-top: 24px; }
 .division-card h3 { overflow-wrap: anywhere; }
@@ -2981,5 +2980,174 @@ body.high-contrast .site-header .brand-emblem img {
 @media (max-width: 380px) {
   .notice-category-page .notice-vacancy-top {
     flex-direction: column;
+  }
+}
+
+/* =========================================================
+   HoD / Officer profile feature
+   Add this block at the END of globals.css.
+   Existing site styles are intentionally not modified.
+   ========================================================= */
+
+.division-hod-link {
+  color: var(--green, #0E4631);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: var(--saffron, #D2600F);
+  text-underline-offset: 4px;
+  transition: color 180ms ease, text-decoration-color 180ms ease;
+}
+
+.division-hod-link:hover {
+  color: var(--saffron-dark, #B24E08);
+}
+
+.division-hod-link:focus-visible,
+.officer-profile-back:focus-visible,
+.officer-profile-contact a:focus-visible {
+  outline: 2px solid var(--saffron, #D2600F);
+  outline-offset: 4px;
+  border-radius: 3px;
+}
+
+.officer-profile-page .site-container {
+  max-width: 1120px;
+}
+
+.officer-profile-back {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  color: var(--green, #0E4631);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.officer-profile-back:hover {
+  color: var(--saffron-dark, #B24E08);
+}
+
+.officer-profile-card {
+  padding: clamp(1.25rem, 3vw, 2.5rem);
+  background: var(--surface, #FFFAEF);
+  border: 1px solid var(--line, #E0CDA9);
+  border-radius: 18px;
+  box-shadow: 0 12px 32px rgba(10, 51, 36, 0.07);
+}
+
+.officer-profile-intro {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding-bottom: 1.75rem;
+  border-bottom: 1px solid var(--line, #E0CDA9);
+}
+
+.officer-profile-photo,
+.officer-profile-placeholder {
+  width: 148px;
+  height: 168px;
+  flex: 0 0 148px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.officer-profile-placeholder {
+  display: grid;
+  place-items: center;
+  background: var(--cream, #F8EDD9);
+  border: 1px solid var(--line, #E0CDA9);
+  color: var(--green, #0E4631);
+  font-family: var(--font-heading, sans-serif);
+  font-size: 2.4rem;
+}
+
+.officer-profile-heading h1 {
+  margin: 0.35rem 0;
+  color: var(--green-deep, #0A3324);
+  font-family: var(--font-heading, sans-serif);
+}
+
+.officer-profile-heading p {
+  margin: 0;
+  color: var(--muted, #5D5A4B);
+}
+
+.officer-profile-notice {
+  margin: 1.5rem 0 0;
+  padding: 1rem 1.15rem;
+  background: var(--cream-light, #FCF5E6);
+  border-left: 3px solid var(--saffron, #D2600F);
+  border-radius: 6px;
+  color: var(--ink, #1C2A21);
+  line-height: 1.7;
+}
+
+.officer-profile-section {
+  padding-top: 1.5rem;
+}
+
+.officer-profile-section h2 {
+  margin: 0 0 0.75rem;
+  color: var(--green, #0E4631);
+  font-family: var(--font-heading, sans-serif);
+  font-size: 1.2rem;
+}
+
+.officer-profile-section p,
+.officer-profile-section li,
+.officer-profile-contact dd {
+  color: var(--ink, #1C2A21);
+  line-height: 1.75;
+}
+
+.officer-profile-section ul {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.officer-profile-contact {
+  display: grid;
+  grid-template-columns: minmax(120px, 180px) 1fr;
+  gap: 0.65rem 1rem;
+  margin: 0;
+}
+
+.officer-profile-contact dt {
+  color: var(--muted, #5D5A4B);
+  font-weight: 700;
+}
+
+.officer-profile-contact dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.officer-profile-contact a {
+  color: var(--green, #0E4631);
+  text-decoration-color: var(--saffron, #D2600F);
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 640px) {
+  .officer-profile-intro {
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .officer-profile-photo,
+  .officer-profile-placeholder {
+    width: 104px;
+    height: 120px;
+    flex-basis: 104px;
+  }
+
+  .officer-profile-contact {
+    grid-template-columns: 1fr;
+    gap: 0.2rem;
+  }
+
+  .officer-profile-contact dd {
+    margin-bottom: 0.6rem;
   }
 }

@@ -2,7 +2,9 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { divisions } from "../data/site-content";
+import { officerProfiles } from "../data/officers";
 
 type DivisionDetail = {
   hod: string;
@@ -16,7 +18,7 @@ const divisionDetails: Record<string, DivisionDetail> = {
   "Digital Forensics": {
     hod: "Dr. Maheshwari",
     overview:
-      "Digital forensics concerns the scientific examination of digital devices and electronic evidence to help establish relevant facts in an investigation. The exact scope depends on the evidence received and the laboratory's confirmed capabilities.",
+      "Digital Forensics focuses on the scientific identification, preservation, acquisition, examination and interpretation of electronic evidence. Digital devices such as computers, mobile phones, storage media and other electronic systems can contain valuable information relevant to an investigation. Forensic examination aims to recover and analyse relevant digital artefacts while maintaining the integrity and traceability of the evidence. The findings can help investigators understand digital activities, establish timelines and interpret information associated with an incident. The exact services and supported technologies depend on the laboratory's approved capabilities.",
     history:
       "The establishment history and milestones of the Digital Forensics section need confirmation from CFSL Hyderabad's official records.",
     work: [
@@ -32,7 +34,7 @@ const divisionDetails: Record<string, DivisionDetail> = {
   "Physics Sciences": {
     hod: "Dr. Maheshwari",
     overview:
-      "Physical-science examinations apply scientific methods to relevant physical evidence. This section is presented as a general overview; the laboratory's precise organisational structure and scope should be confirmed.",
+      "Forensic Physics applies principles of physics, engineering and material science to the examination of physical evidence. It can help establish the nature, characteristics and possible origin of materials or objects recovered during an investigation. Depending on the type of evidence, examinations may involve measurements, physical comparisons, structural assessment and scientific interpretation. The objective is to convert physical observations into reliable findings that can assist investigative and judicial processes. The specific examination areas available at CFSL Hyderabad require confirmation.",
     history:
       "Department establishment dates and historical milestones have not yet been verified.",
     work: [
@@ -48,7 +50,7 @@ const divisionDetails: Record<string, DivisionDetail> = {
   "Ballistics": {
     hod: "Dr. Maheshwari",
     overview:
-      "Forensic ballistics examines firearms-related evidence using scientific methods. The exact examinations offered by CFSL Hyderabad should be confirmed before publishing a definitive service list.",
+      "Forensic Ballistics deals with the scientific examination of firearms, ammunition and evidence associated with firearm-related incidents. Examinations can help assess the characteristics of submitted firearms, compare relevant ammunition components and study marks or other features associated with their use. Scientific comparison and interpretation of ballistic evidence may help establish connections between submitted exhibits and provide information relevant to an investigation. The exact range of examinations offered depends on the laboratory's approved scope.",
     history:
       "The department's history and development milestones remain to be confirmed.",
     work: [
@@ -64,7 +66,7 @@ const divisionDetails: Record<string, DivisionDetail> = {
   "Biological Sciences": {
     hod: "To be confirmed",
     overview:
-      "Biological forensic examination applies scientific methods to biological material that may be relevant to an investigation.",
+      "Forensic Biology involves the scientific examination of biological materials that may be recovered from crime scenes, objects or other submitted exhibits. Such material can include blood, hair, tissue and other biological traces, depending on the nature of the case. Examination may help determine the nature and relevance of biological evidence and support further scientific analysis. Biological evidence can be particularly important in investigations involving physical contact, violence and unexplained biological traces. The availability of specific serological and DNA examination services at CFSL Hyderabad should be confirmed.",
     history:
       "The establishment history and milestones of this section need official confirmation.",
     work: [
@@ -80,7 +82,7 @@ const divisionDetails: Record<string, DivisionDetail> = {
   "Chemical Sciences": {
     hod: "To be confirmed",
     overview:
-      "Chemical forensic examination uses analytical methods to identify or characterise substances and residues relevant to investigations.",
+      "Forensic Chemistry applies analytical chemistry to the examination of substances, residues and materials associated with criminal investigations. Scientific analysis can help identify, characterise or compare submitted samples and provide information about their chemical composition. Depending on the evidence and analytical requirements, examinations may involve laboratory-based testing and instrumental techniques. The results can assist in investigations involving unknown substances, chemical residues and other material evidence. Specific analytical facilities and the categories of samples examined at CFSL Hyderabad require official confirmation.",
     history:
       "Official establishment dates and departmental milestones have not yet been confirmed.",
     work: [
@@ -96,7 +98,7 @@ const divisionDetails: Record<string, DivisionDetail> = {
   "Questioned Documents": {
     hod: "To be confirmed",
     overview:
-      "Questioned-document examination can involve the scientific assessment of documents whose authorship, authenticity or features are disputed.",
+      "Questioned Document Examination focuses on the scientific assessment of documents whose authenticity, authorship or physical characteristics are in dispute. Documents may be examined for handwriting and signature characteristics, alterations, additions, erasures, printing features and other relevant details, where applicable. Comparative examination can help assess similarities and differences between questioned and known material. Such examinations are valuable in cases involving disputed records, suspected document manipulation and other document-related evidence. The precise services available depend on the laboratory's approved scope.",
     history:
       "The history and organisational position of this section require official confirmation.",
     work: [
@@ -109,10 +111,26 @@ const divisionDetails: Record<string, DivisionDetail> = {
       "Specific document-examination instruments and the services available locally need confirmation.",
   },
 
+  "Explosive Forensics": {
+    hod: "To be confirmed",
+    overview:
+      "Forensic examination of explosives focuses on the scientific analysis of materials, residues and evidence associated with suspected explosive incidents. Such examinations can help determine the nature and characteristics of submitted materials, identify relevant chemical traces and assess evidence recovered from incident scenes. The analysis of post-blast residues and associated physical evidence may provide valuable information for reconstructing events and supporting investigations. The specific examination methods, facilities and capabilities available at CFSL Hyderabad should be confirmed through official laboratory records.",
+    history:
+      "The history and organisational position of this section require official confirmation.",
+    work: [
+  "Scientific examination of materials and residues associated with suspected explosive incidents.",
+  "Analysis of relevant post-blast residues and physical evidence, where applicable.",
+  "Identification and characterisation of submitted explosive-related samples within the approved scope.",
+  "Documentation and interpretation of scientific examination findings.",
+],
+facilities:
+  "Specific analytical instruments, explosive examination facilities and post-blast analysis capabilities require confirmation from official laboratory records.",
+  },
+
   "Research & Development": {
     hod: "To be confirmed",
     overview:
-      "Research and development can support improvements in forensic methods, scientific knowledge, training and laboratory practice.",
+      "Research and Development plays an important role in advancing forensic science through the study, evaluation and improvement of scientific methods and practices. Research activities can contribute to the development of examination procedures, the evaluation of emerging technologies and improvements in the reliability and efficiency of forensic analysis. Collaboration, technical knowledge sharing and scientific training can also support the wider development of forensic capabilities. The specific research programmes, projects and collaborations undertaken by CFSL Hyderabad should be included once verified from official records.",
     history:
       "The section's establishment and documented milestones have not yet been verified.",
     work: [
@@ -128,7 +146,7 @@ const divisionDetails: Record<string, DivisionDetail> = {
   "Psychological Forensics": {
     hod: "To be confirmed",
     overview:
-    "Psychological forensics applies scientific methods to the assessment of psychological aspects relevant to investigations.",
+      "Psychological Forensics concerns the application of psychological knowledge and scientific assessment methods to questions arising in legal and investigative contexts. Depending on the approved scope, relevant work may involve the assessment of psychological factors, interpretation of behavioural information and preparation of structured professional observations. Psychological perspectives can contribute to a broader understanding of matters referred for forensic examination. The exact responsibilities, assessment methods and services associated with this section at CFSL Hyderabad require official confirmation.",
     history:
       "The establishment history and milestones of this section need official confirmation.",
     work: [
@@ -154,6 +172,7 @@ const divisionDetailKeyMap: Record<string, string> = {
   "Biology Forensics": "Biological Sciences",
   "Biological Sciences": "Biological Sciences",
   "Questioned Documents Forensics": "Questioned Documents",
+  "Explosive Forensics": "Explosive Forensics",
   "Questioned Documents": "Questioned Documents",
   "Ballistics Forensics": "Ballistics",
   "Research & Development": "Research & Development",
@@ -328,7 +347,18 @@ export default function DivisionsContent() {
 
               <div className="division-detail-block">
                 <h3>Head of Department</h3>
-                <p>{current?.hod}</p>
+                <p>
+                  {current?.hod && officerProfiles[current.hod] ? (
+                    <Link
+                      className="division-hod-link"
+                      href={`/officers/${officerProfiles[current.hod].slug}`}
+                    >
+                      {current.hod}
+                    </Link>
+                  ) : (
+                    current?.hod
+                  )}
+                </p>
               </div>
 
               <div className="division-detail-block">
