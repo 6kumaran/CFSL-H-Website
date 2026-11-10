@@ -19,9 +19,9 @@ export type OfficerProfile = {
 };
 
 export const officerProfiles: Record<string, OfficerProfile> = {
-  "Dr. Maheshwari": {
+  "Dr. M. Maheshwari": {
     slug: "dr-maheshwari",
-    name: "Dr. Maheshwari",
+    name: "Dr. M. Maheshwari",
     designation: "Designation to be confirmed",
     biography: null,
     qualifications: [],

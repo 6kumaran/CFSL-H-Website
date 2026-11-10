@@ -358,7 +358,7 @@ body h6 {
 .hero-carousel { min-width: 0; width: 100%; }
 .hero-carousel-frame {
   position: relative; isolation: isolate; overflow: hidden; aspect-ratio: 4 / 3; min-height: 300px;
-  border: 0; border-radius: 0; background: var(--green-deep);
+  border: 0; border-radius: 14px; background: var(--green-deep);
 }
 .hero-carousel-slide { position: absolute; inset: 0; opacity: 0; visibility: hidden; transform: scale(1.025); transition: opacity .65s ease, transform 1.2s ease, visibility .65s ease; }
 .hero-carousel-slide.is-active { opacity: 1; visibility: visible; transform: scale(1); }

@@ -16,7 +16,7 @@ type DivisionDetail = {
 
 const divisionDetails: Record<string, DivisionDetail> = {
   "Digital Forensics": {
-    hod: "Dr. Maheshwari",
+    hod: "Dr. M. Maheshwari",
     overview:
       "Digital Forensics focuses on the scientific identification, preservation, acquisition, examination and interpretation of electronic evidence. Digital devices such as computers, mobile phones, storage media and other electronic systems can contain valuable information relevant to an investigation. Forensic examination aims to recover and analyse relevant digital artefacts while maintaining the integrity and traceability of the evidence. The findings can help investigators understand digital activities, establish timelines and interpret information associated with an incident. The exact services and supported technologies depend on the laboratory's approved capabilities.",
     history:
@@ -32,7 +32,7 @@ const divisionDetails: Record<string, DivisionDetail> = {
   },
 
   "Physics Sciences": {
-    hod: "Dr. Maheshwari",
+    hod: "Dr. M. Maheshwari",
     overview:
       "Forensic Physics applies principles of physics, engineering and material science to the examination of physical evidence. It can help establish the nature, characteristics and possible origin of materials or objects recovered during an investigation. Depending on the type of evidence, examinations may involve measurements, physical comparisons, structural assessment and scientific interpretation. The objective is to convert physical observations into reliable findings that can assist investigative and judicial processes. The specific examination areas available at CFSL Hyderabad require confirmation.",
     history:
@@ -48,7 +48,7 @@ const divisionDetails: Record<string, DivisionDetail> = {
   },
 
   "Ballistics": {
-    hod: "Dr. Maheshwari",
+    hod: "Dr. M. Maheshwari",
     overview:
       "Forensic Ballistics deals with the scientific examination of firearms, ammunition and evidence associated with firearm-related incidents. Examinations can help assess the characteristics of submitted firearms, compare relevant ammunition components and study marks or other features associated with their use. Scientific comparison and interpretation of ballistic evidence may help establish connections between submitted exhibits and provide information relevant to an investigation. The exact range of examinations offered depends on the laboratory's approved scope.",
     history:
