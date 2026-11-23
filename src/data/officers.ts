@@ -22,7 +22,7 @@ export const officerProfiles: Record<string, OfficerProfile> = {
   "Dr. M. Maheshwari": {
     slug: "dr-maheshwari",
     name: "Dr. M. Maheshwari",
-    designation: "Designation to be confirmed",
+    designation: "Head of Physics, Ballistics & Digital Forensics Divisions",
     biography: null,
     qualifications: [],
     experience: null,
