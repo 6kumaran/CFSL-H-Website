@@ -96,7 +96,7 @@ function HomeContent() {
           <Link className="welcome-more" href="/about">View More</Link>
         </div>
         <div className="welcome-photo-wrap">
-          <img className="welcome-photo" src="/DF_Team.jpeg" alt="Laboratory team outside the laboratory building" />
+          <img className="welcome-photo" src="/CFSL_Hyd_Team.jpeg" alt="Laboratory team outside the laboratory building" />
         </div>
       </div>
     </section>

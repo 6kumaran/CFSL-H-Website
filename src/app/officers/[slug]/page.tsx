@@ -18,8 +18,7 @@ export default async function OfficerProfilePage({ params }: OfficerPageProps) {
     Boolean(officer.experience) ||
     officer.specialisations.length > 0 ||
     Boolean(officer.email) ||
-    Boolean(officer.officePhone) ||
-    Boolean(officer.officeLocation);
+    Boolean(officer.officePhone);
 
   return (
     <main className="section page-content officer-profile-page">
@@ -100,7 +99,7 @@ export default async function OfficerProfilePage({ params }: OfficerPageProps) {
             </section>
           ) : null}
 
-          {officer.email || officer.officePhone || officer.officeLocation ? (
+          {officer.email || officer.officePhone ? (
             <section className="officer-profile-section">
               <h2>Official Contact</h2>
               <dl className="officer-profile-contact">
@@ -118,12 +117,6 @@ export default async function OfficerProfilePage({ params }: OfficerPageProps) {
                     <dd>
                       <a href={`tel:${officer.officePhone}`}>{officer.officePhone}</a>
                     </dd>
-                  </>
-                ) : null}
-                {officer.officeLocation ? (
-                  <>
-                    <dt>Office Location</dt>
-                    <dd>{officer.officeLocation}</dd>
                   </>
                 ) : null}
               </dl>

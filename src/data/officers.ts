@@ -14,7 +14,6 @@ export type OfficerProfile = {
   specialisations: string[];
   email: string | null;
   officePhone: string | null;
-  officeLocation: string | null;
   photo: string | null;
 };
 
@@ -29,7 +28,6 @@ export const officerProfiles: Record<string, OfficerProfile> = {
     specialisations: [],
     email: null,
     officePhone: null,
-    officeLocation: null,
     photo: null,
   },
 };
