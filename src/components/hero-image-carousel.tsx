@@ -17,7 +17,7 @@ const slides = [
     description: "Spaces supporting forensic science work",
   },
   {
-    src: "/DF_Team.jpeg",
+    src: "/CFSL_Hyd_Team_New_Director.jpeg",
     alt: "Group photograph at a forensic science laboratory event",
     title: "People & Institution",
     description: "Institutional activities and events",
