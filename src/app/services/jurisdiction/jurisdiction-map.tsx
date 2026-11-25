@@ -2,6 +2,9 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useLanguage } from "../../../components/language-provider";
+import { footerText as f } from "../../../data/ui-text";
+import { jr, jurisdictionNames, mapLabelWidth } from "../../../data/services-i18n";
 
 type Position = [number, number];
 type Ring = Position[];
@@ -195,6 +198,7 @@ function curvePath(
 }
 
 export default function JurisdictionMap() {
+  const { lang } = useLanguage();
   const [geo, setGeo] = useState<FeatureCollection | null>(null);
   const [loadError, setLoadError] = useState(false);
 
@@ -268,24 +272,18 @@ export default function JurisdictionMap() {
     [mapFeatures]
   );
 
-  const [pinX, pinY] = project(HYDERABAD);
+    const [pinX, pinY] = project(HYDERABAD);
 
   return (
     <>
       <section className="section jurisdiction-page">
         <div className="site-container">
           <div className="jurisdiction-heading">
-            <span className="section-kicker">
-              Regional service coverage
-            </span>
+            <span className="section-kicker">{jr.kicker[lang]}</span>
 
-            <h2>States &amp; Union Territories served</h2>
+            <h2>{jr.heading[lang]}</h2>
 
-            <p>
-              Five southern states are highlighted across the full
-              India map, with the service routes converging at
-              CFSL Hyderabad.
-            </p>
+            <p>{jr.intro[lang]}</p>
           </div>
 
           <div className="jurisdiction-layout">
@@ -298,42 +296,28 @@ export default function JurisdictionMap() {
                     role="img"
                     aria-labelledby="jurisdiction-map-title jurisdiction-map-desc"
                   >
-                    <title id="jurisdiction-map-title">
-                      India map showing CFSL Hyderabad jurisdiction
-                    </title>
+                    <title id="jurisdiction-map-title">{jr.svgTitle[lang]}</title>
 
-                    <desc id="jurisdiction-map-desc">
-  Full India state and Union Territory map.
-  Andhra Pradesh, Telangana, Karnataka, Kerala
-  and Tamil Nadu are highlighted in sequence.
-  The CFSL Hyderabad marker appears first,
-  followed by five subtle curved routes that
-  briefly converge at the marker and then fade
-  away.
-</desc>
+                    <desc id="jurisdiction-map-desc">{jr.svgDesc[lang]}</desc>
 
                     <defs>
                       <marker
-  id="jurisdiction-arrowhead"
-  markerWidth="4"
-  markerHeight="4"
-  refX="3.4"
-  refY="2"
-  orient="auto"
-  markerUnits="userSpaceOnUse"
->
-  <path
-    d="M0,0.4 L0,3.6 L4,2 z"
-    fill="#c45b43"
-  />
-</marker>
+                        id="jurisdiction-arrowhead"
+                        markerWidth="4"
+                        markerHeight="4"
+                        refX="3.4"
+                        refY="2"
+                        orient="auto"
+                        markerUnits="userSpaceOnUse"
+                      >
+                        <path d="M0,0.4 L0,3.6 L4,2 z" fill="#c45b43" />
+                      </marker>
                     </defs>
 
                     <g className="jurisdiction-state-layer">
-                      {mapFeatures.map(({ feature, name, d }) => {
+                      {mapFeatures.map(({ name, d }) => {
                         const index = highlighted.findIndex(
-                          (state) =>
-                            state.toLowerCase() === name.toLowerCase()
+                          (state) => state.toLowerCase() === name.toLowerCase()
                         );
 
                         return (
@@ -354,11 +338,7 @@ export default function JurisdictionMap() {
                       {routeFeatures.map((route, index) => (
                         <path
                           key={route.name}
-                          d={curvePath(
-                            route.center,
-                            HYDERABAD,
-                            index
-                          )}
+                          d={curvePath(route.center, HYDERABAD, index)}
                           className={`jurisdiction-route jurisdiction-route-${index + 1}`}
                           markerEnd="url(#jurisdiction-arrowhead)"
                           pathLength="1"
@@ -371,60 +351,41 @@ export default function JurisdictionMap() {
                       className="jurisdiction-location"
                       transform={`translate(${pinX.toFixed(1)} ${(pinY - 35).toFixed(1)})`}
                     >
-                      <circle
-                        className="jurisdiction-pin-pulse"
-                        r="27"
-                      />
+                      <circle className="jurisdiction-pin-pulse" r="27" />
 
                       <path
                         className="jurisdiction-pin"
                         d="M0,-25 C-14,-25 -23,-15 -23,-1 C-23,16 0,35 0,35 C0,35 23,16 23,-1 C23,-15 14,-25 0,-25 Z"
                       />
 
-                      <circle
-                        cy="-2"
-                        r="7"
-                        className="jurisdiction-pin-core"
-                      />
+                      <circle cy="-2" r="7" className="jurisdiction-pin-core" />
                     </g>
 
                     <g
                       className="jurisdiction-location-label"
                       transform={`translate(${pinX + 28} ${pinY - 61})`}
                     >
-                      <rect width="190" height="38" rx="8" />
+                      <rect width={mapLabelWidth[lang]} height="38" rx="8" />
                       <text x="12" y="25">
-                        CFSL Hyderabad
+                        {f.org[lang]}
                       </text>
                     </g>
                   </svg>
                 ) : (
-                  <div
-                    className="jurisdiction-map-loading"
-                    role="status"
-                  >
-                    {loadError
-                      ? "India map data could not be loaded. Check that the GeoJSON file is in public/data."
-                      : "Loading India map…"}
+                  <div className="jurisdiction-map-loading" role="status">
+                    {loadError ? jr.loadError[lang] : jr.loading[lang]}
                   </div>
                 )}
               </div>
 
-              <p className="jurisdiction-map-caption">
-                State and Union Territory boundaries are shown for
-                geographic context. Arrows are illustrative service
-                links, not travel routes.
-              </p>
+              <p className="jurisdiction-map-caption">{jr.caption[lang]}</p>
             </div>
 
-            <aside
-              className="jurisdiction-info"
-              aria-label="Jurisdiction list"
-            >
-              <h3>States &amp; Union Territories served</h3>
+            <aside className="jurisdiction-info" aria-label={jr.listAria[lang]}>
+              <h3>{jr.heading[lang]}</h3>
 
               <ol className="jurisdiction-list">
-                {jurisdictions.map((item) => (
+                {jurisdictions.map((item, i) => (
                   <li
                     key={item.number}
                     className="jurisdiction-list-item"
@@ -435,34 +396,24 @@ export default function JurisdictionMap() {
                       } as React.CSSProperties
                     }
                   >
-                    <span className="jurisdiction-list-number">
-                      {item.number}
-                    </span>
+                    <span className="jurisdiction-list-number">{item.number}</span>
 
-                    <span>{item.name}</span>
+                    <span>{jurisdictionNames[i][lang]}</span>
                   </li>
                 ))}
               </ol>
 
               <div className="jurisdiction-summary">
-                <strong>
-                  Seven jurisdictions: 5 states and 2 Union Territories
-                </strong>
+                <strong>{jr.summaryStrong[lang]}</strong>
 
                 <p>
-                  <strong>CFSL Hyderabad:</strong> Ramanthapur,
-                  Hyderabad, Telangana
+                  <strong>{jr.summaryLabel[lang]}</strong> {jr.summaryPlace[lang]}
                 </p>
               </div>
             </aside>
           </div>
 
-          <p className="jurisdiction-disclaimer">
-            The highlighted coverage is reproduced from the
-            jurisdiction reference supplied for this website.
-            Confirm current official allocation before using it
-            for case forwarding or legal purposes.
-          </p>
+          <p className="jurisdiction-disclaimer">{jr.disclaimer[lang]}</p>
         </div>
       </section>
     </>

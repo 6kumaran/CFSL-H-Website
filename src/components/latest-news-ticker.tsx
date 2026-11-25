@@ -1,37 +1,27 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { useLanguage } from "./language-provider";
+import { ticker as t } from "../data/home-i18n";
 
-const announcements = [
-  {
-    category: "NOTICE",
-    title: "Official notices and circulars will be published here",
-    href: "/notices",
-  },
-  {
-    category: "UPDATE",
-    title: "Explore scientific divisions and laboratory information",
-    href: "/divisions",
-  },
-  {
-    category: "INFORMATION",
-    title: "Visit the notices section for public information updates",
-    href: "/notices",
-  },
-];
+// Only hrefs live here; text comes from t.items (same order)
+const hrefs = ["/notices", "/divisions", "/notices"];
 
 export default function LatestNewsTicker() {
+  const { lang } = useLanguage();
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
+  const total = t.items.length;
+
   const showNext = useCallback(() => {
-    setActiveIndex((current) => (current + 1) % announcements.length);
-  }, []);
+    setActiveIndex((current) => (current + 1) % total);
+  }, [total]);
 
   const showPrevious = useCallback(() => {
-    setActiveIndex((current) => (current - 1 + announcements.length) % announcements.length);
-  }, []);
+    setActiveIndex((current) => (current - 1 + total) % total);
+  }, [total]);
 
   useEffect(() => {
     if (isPaused || isHovered) return;
@@ -40,49 +30,51 @@ export default function LatestNewsTicker() {
     return () => window.clearInterval(timer);
   }, [isPaused, isHovered, showNext]);
 
+  const active = t.items[activeIndex];
+
   return (
     <section
       className="latest-news"
-      aria-label="Latest news and announcements"
+      aria-label={t.aria[lang]}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       <div className="site-container latest-news-inner">
         <div className="latest-news-label">
           <span className="latest-news-label-icon" aria-hidden="true">▤</span>
-          <span>Latest News</span>
+          <span>{t.label[lang]}</span>
         </div>
 
         <div className="latest-news-content">
-          <span className="latest-news-live" aria-hidden="true">NEW</span>
+          <span className="latest-news-live" aria-hidden="true">{t.newBadge[lang]}</span>
           <a
             key={activeIndex}
             className="latest-news-item"
-            href={announcements[activeIndex].href}
-            aria-label={`${announcements[activeIndex].category}: ${announcements[activeIndex].title}`}
+            href={hrefs[activeIndex]}
+            aria-label={`${active.category[lang]}: ${active.title[lang]}`}
           >
-            <span className="latest-news-category">{announcements[activeIndex].category}</span>
-            <span className="latest-news-title">{announcements[activeIndex].title}</span>
+            <span className="latest-news-category">{active.category[lang]}</span>
+            <span className="latest-news-title">{active.title[lang]}</span>
           </a>
           <span className="latest-news-count" aria-hidden="true">
-            {activeIndex + 1} / {announcements.length}
+            {activeIndex + 1} / {total}
           </span>
         </div>
 
-        <div className="latest-news-controls" aria-label="News ticker controls">
-          <button type="button" onClick={showPrevious} aria-label="Previous announcement" title="Previous announcement">
+        <div className="latest-news-controls" aria-label={t.controls[lang]}>
+          <button type="button" onClick={showPrevious} aria-label={t.prev[lang]} title={t.prev[lang]}>
             <span aria-hidden="true">‹</span>
           </button>
           <button
             type="button"
             onClick={() => setIsPaused((paused) => !paused)}
-            aria-label={isPaused ? "Resume automatic announcements" : "Pause automatic announcements"}
+            aria-label={isPaused ? t.resumeAria[lang] : t.pauseAria[lang]}
             aria-pressed={isPaused}
-            title={isPaused ? "Resume" : "Pause"}
+            title={isPaused ? t.resume[lang] : t.pause[lang]}
           >
             <span aria-hidden="true">{isPaused ? "▶" : "Ⅱ"}</span>
           </button>
-          <button type="button" onClick={showNext} aria-label="Next announcement" title="Next announcement">
+          <button type="button" onClick={showNext} aria-label={t.next[lang]} title={t.next[lang]}>
             <span aria-hidden="true">›</span>
           </button>
         </div>

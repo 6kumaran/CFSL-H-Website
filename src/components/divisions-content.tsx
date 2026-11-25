@@ -5,6 +5,10 @@ import { useState } from "react";
 import Link from "next/link";
 import { divisions } from "../data/site-content";
 import { officerProfiles } from "../data/officers";
+import { useLanguage } from "./language-provider";
+import { tx } from "../data/site-content-i18n";
+import { detailsI18n, descI18n, divText as d } from "../data/divisions-i18n";
+import { localizeOfficer } from "../data/officers-i18n";
 
 type DivisionDetail = {
   hod: string;
@@ -237,67 +241,64 @@ const divisionImages: Record<string, string> = {
 };
 
 export default function DivisionsContent() {
+  const { lang } = useLanguage();
   const [selected, setSelected] = useState<string | null>(null);
 
-  // Use the existing divisions list and add Ballistics only if it is absent.
   const divisionTitles = Array.from(
-    new Set([
-      ...divisions.map((item) => item.title),
-    ])
+    new Set([...divisions.map((item) => item.title)])
   );
 
-  // Resolve navigation labels to the existing detail records.
   const detailKey = selected
     ? divisionDetailKeyMap[selected] ?? selected
     : null;
 
-  const current: DivisionDetail | null = detailKey
-    ? divisionDetails[detailKey] ?? fallbackDetail
+  const known = detailKey ? divisionDetails[detailKey] : undefined;
+  const base: DivisionDetail | null = detailKey ? known ?? fallbackDetail : null;
+
+  // English stays as written; Hindi/Telugu text is laid over it (hod is kept from the English record)
+  const translated =
+    lang !== "en" && detailKey
+      ? detailsI18n[known ? detailKey : "__fallback"]?.[lang]
+      : undefined;
+  const current: DivisionDetail | null = base
+    ? { ...base, ...translated }
     : null;
+
+  const hodText =
+    current?.hod === "To be confirmed" ? d.tbc[lang] : current?.hod;
+
+  const cardText = (title: string) =>
+    lang === "en"
+      ? divisionDescriptions[title] ?? d.defaultDesc.en
+      : descI18n[title]?.[lang] ?? d.defaultDesc[lang];
 
   return (
     <section className="section page-content divisions-page-content">
       <div className="site-container page-content-grid divisions-page-grid">
-
-        {/* Sidebar remains visible in both directory and detail views */}
-        <aside
-          className="side-nav division-side-nav"
-          aria-label="Scientific divisions"
-        >
-          <span className="side-nav-heading">On this page</span>
+        <aside className="side-nav division-side-nav" aria-label={d.aria[lang]}>
+          <span className="side-nav-heading">{d.onThisPage[lang]}</span>
 
           {divisionTitles.map((title) => (
             <button
               key={title}
               type="button"
-              className={`division-selector ${
-                selected === title ? "active" : ""
-              }`}
-              aria-current={
-                selected === title ? "page" : undefined
-              }
+              className={`division-selector ${selected === title ? "active" : ""}`}
+              aria-current={selected === title ? "page" : undefined}
               onClick={() => setSelected(title)}
             >
-              {title}
+              {tx(title, lang)}
             </button>
           ))}
         </aside>
 
-        {/* Main content changes according to the selected department */}
         <article className="page-article divisions-article">
           {!selected ? (
             <>
-              <span className="section-kicker">
-                CFSL Hyderabad · Scientific Divisions
-              </span>
+              <span className="section-kicker">{d.kicker[lang]}</span>
 
-              <h2>Our Divisions</h2>
+              <h2>{d.heading[lang]}</h2>
 
-              <p>
-                Explore the scientific divisions of CFSL Hyderabad.
-                Select a division to learn more about its responsibilities,
-                areas of work and facilities.
-              </p>
+              <p>{d.intro[lang]}</p>
 
               <div className="division-card-grid">
                 {divisionTitles.map((title) => (
@@ -309,23 +310,16 @@ export default function DivisionsContent() {
                   >
                     <div className="division-card-image">
                       <img
-  src={divisionImages[title] ?? "/images/divisions/default.jpg"}
-  alt={`${title} division`}
-  loading="lazy"
-/>
+                        src={divisionImages[title] ?? "/images/divisions/default.jpg"}
+                        alt={`${tx(title, lang)} ${d.divisionAlt[lang]}`}
+                        loading="lazy"
+                      />
                     </div>
 
                     <div className="division-card-content">
-                      <h3>{title}</h3>
-
-                      <p>
-                        {divisionDescriptions[title] ??
-                          "Explore the scientific examination and forensic activities associated with this division."}
-                      </p>
-
-                      <span className="division-card-link">
-                        Explore division →
-                      </span>
+                      <h3>{tx(title, lang)}</h3>
+                      <p>{cardText(title)}</p>
+                      <span className="division-card-link">{d.explore[lang]}</span>
                     </div>
                   </button>
                 ))}
@@ -338,36 +332,36 @@ export default function DivisionsContent() {
                 className="division-back-button"
                 onClick={() => setSelected(null)}
               >
-                ← Back to All Divisions
+                {d.back[lang]}
               </button>
 
-              <h2>{selected}</h2>
+              <h2>{tx(selected, lang)}</h2>
 
               <p>{current?.overview}</p>
 
               <div className="division-detail-block">
-                <h3>Head of Department</h3>
+                <h3>{d.hod[lang]}</h3>
                 <p>
                   {current?.hod && officerProfiles[current.hod] ? (
                     <Link
                       className="division-hod-link"
                       href={`/officers/${officerProfiles[current.hod].slug}`}
                     >
-                      {current.hod}
+                      {localizeOfficer(officerProfiles[current.hod], lang).name}
                     </Link>
                   ) : (
-                    current?.hod
+                    hodText
                   )}
                 </p>
               </div>
 
               <div className="division-detail-block">
-                <h3>Department history</h3>
+                <h3>{d.history[lang]}</h3>
                 <p>{current?.history}</p>
               </div>
 
               <div className="division-detail-block">
-                <h3>Areas of work</h3>
+                <h3>{d.work[lang]}</h3>
 
                 <ul className="article-list">
                   {current?.work.map((item) => (
@@ -377,16 +371,11 @@ export default function DivisionsContent() {
               </div>
 
               <div className="division-detail-block">
-                <h3>Facilities and instruments</h3>
+                <h3>{d.facilities[lang]}</h3>
                 <p>{current?.facilities}</p>
               </div>
 
-              <p className="division-source-note">
-                This page is a developing information directory.
-                Confirm the division's official name, responsibilities,
-                officer details and facilities before treating this
-                information as an official laboratory statement.
-              </p>
+              <p className="division-source-note">{d.sourceNote[lang]}</p>
             </>
           )}
         </article>

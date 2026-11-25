@@ -2,24 +2,33 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import JurisdictionMap from "./jurisdiction-map";
 import "./jurisdiction.css";
+import { getLang } from "../../../lib/i18n-server";
+import { navLabel } from "../../../data/ui-text";
+import { jr } from "../../../data/services-i18n";
 
-export const metadata: Metadata = {
-  title: "Jurisdiction | CFSL Hyderabad",
-  description: "Map showing CFSL Hyderabad's regional jurisdiction across five southern states and two Union Territories.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const lang = await getLang();
+  return {
+    // The root layout template already appends "| CFSL Hyderabad"
+    title: navLabel("Jurisdiction", lang),
+    description: jr.metaDescription[lang],
+  };
+}
 
-export default function JurisdictionPage() {
+export default async function JurisdictionPage() {
+  const lang = await getLang();
+
   return (
     <>
       <section className="page-banner">
         <div className="site-container page-banner-inner">
-          <nav className="breadcrumbs" aria-label="Breadcrumbs">
-            <Link href="/">Home</Link><span aria-hidden="true">/</span>
-            <Link href="/services">Services</Link><span aria-hidden="true">/</span>
-            <span aria-current="page">Jurisdiction</span>
+          <nav className="breadcrumbs" aria-label={jr.breadcrumbsAria[lang]}>
+            <Link href="/">{navLabel("Home", lang)}</Link><span aria-hidden="true">/</span>
+            <Link href="/services">{navLabel("Services", lang)}</Link><span aria-hidden="true">/</span>
+            <span aria-current="page">{navLabel("Jurisdiction", lang)}</span>
           </nav>
-          <h1>Jurisdiction of CFSL, Hyderabad</h1>
-          <p>Central Forensic Science Laboratory · Directorate of Forensic Science Services · Ministry of Home Affairs</p>
+          <h1>{jr.h1[lang]}</h1>
+          <p>{jr.subtitle[lang]}</p>
         </div>
       </section>
       <JurisdictionMap />

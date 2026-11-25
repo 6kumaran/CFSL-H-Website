@@ -1,4 +1,3 @@
-
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -8,91 +7,29 @@ import {
   FileText,
   Link2,
   Newspaper,
-  ExternalLink,
   Info,
 } from "lucide-react";
+import { getLang } from "../../../lib/i18n-server";
+import { navLabel } from "../../../data/ui-text";
+import { categoryText, linkText, localizeVacancy, nt } from "../../../data/notices-i18n";
 
 type Category = "latest-news" | "vacancy" | "important-links";
 
-type CategoryConfig = {
-  title: string;
-  intro: string;
-  heading: string;
-  description: string;
+// Page titles use the English nav label, which navLabel() translates
+const categoryTitles: Record<Category, string> = {
+  "latest-news": "Latest News",
+  vacancy: "Vacancy",
+  "important-links": "Important Links",
 };
 
-const categories: Record<Category, CategoryConfig> = {
-  "latest-news": {
-    title: "Latest News",
-    intro:
-      "Stay informed about announcements, activities and important updates from CFSL Hyderabad.",
-    heading: "News & Announcements",
-    description:
-      "Updates and announcements relating to the laboratory and its activities.",
-  },
-
-  vacancy: {
-    title: "Vacancy",
-    intro:
-      "Information about recruitment opportunities, vacancies and related employment notifications.",
-    heading: "Recruitment & Vacancies",
-    description:
-      "Find recruitment-related announcements and official vacancy notifications.",
-  },
-
-  "important-links": {
-    title: "Important Links",
-    intro:
-      "Access useful official websites, government resources and institutional information.",
-    heading: "Useful Resources & Official Websites",
-    description:
-      "A collection of relevant government and institutional resources.",
-  },
-};
-
-const officialLinks = [
-  {
-    title: "CFSL Hyderabad",
-    category: "Official Laboratory Website",
-    description:
-      "Visit the official website of the Central Forensic Science Laboratory, Hyderabad.",
-    href: "https://cfslhyd.gov.in/",
-    label: "Visit Website",
-  },
-  {
-    title: "Ministry of Home Affairs",
-    category: "Government of India",
-    description:
-      "Access information, announcements, policies and official resources published by the Ministry of Home Affairs.",
-    href: "https://www.mha.gov.in/",
-    label: "Visit Ministry Website",
-  },
-  {
-    title: "National Portal of India",
-    category: "Government Information",
-    description:
-      "Explore government information and services, including the institutional listing for CFSL Hyderabad.",
-    href: "https://www.india.gov.in/",
-    label: "Visit National Portal",
-  },
-  {
-    title: "India Science, Technology & Innovation",
-    category: "Institutional Directory",
-    description:
-      "View the institutional profile and publicly listed details of CFSL Hyderabad.",
-    href: "https://www.indiascienceandtechnology.gov.in/allstinstitutions/central-forensic-science-laboratory-cfsl-hyderabad",
-    label: "View Institution Profile",
-  },
-  {
-    title: "Central Government RTI Online Portal",
-    category: "Public Information",
-    description:
-      "Access the Central Government RTI Online service for eligible public authorities and applications.",
-    href: "https://rtionline.gov.in/",
-    label: "Open RTI Portal",
-  },
+// Only links here; text comes from linkText (same order)
+const officialLinkHrefs = [
+  "https://cfslhyd.gov.in/",
+  "https://www.mha.gov.in/",
+  "https://www.india.gov.in/",
+  "https://www.indiascienceandtechnology.gov.in/allstinstitutions/central-forensic-science-laboratory-cfsl-hyderabad",
+  "https://rtionline.gov.in/",
 ];
-
 
 type Vacancy = {
   id: string;
@@ -104,7 +41,6 @@ type Vacancy = {
   status: "Open" | "Closed";
   notificationUrl: string;
 };
-
 
 const vacancies: Vacancy[] = [
   {
@@ -120,8 +56,6 @@ const vacancies: Vacancy[] = [
   },
 ];
 
-
-
 const categoryLinks = [
   { label: "Latest News", href: "/notices/latest-news" },
   { label: "Vacancy", href: "/notices/vacancy" },
@@ -133,50 +67,53 @@ type Props = {
 };
 
 export function generateStaticParams() {
-  return Object.keys(categories).map((category) => ({
+  return Object.keys(categoryTitles).map((category) => ({
     category,
   }));
 }
 
-export async function generateMetadata({
-  params,
-}: Props): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { category } = await params;
+  if (!Object.prototype.hasOwnProperty.call(categoryTitles, category)) return {};
 
-  const page = categories[category as Category];
-
-  if (!page) return {};
+  const lang = await getLang();
+  const key = category as Category;
 
   return {
-    title: `${page.title} | CFSL Hyderabad`,
-    description: page.intro,
+    // The root layout's title template already appends "| CFSL Hyderabad"
+    title: navLabel(categoryTitles[key], lang),
+    description: categoryText[key].intro[lang],
   };
 }
 
 export default async function NoticeCategoryPage({ params }: Props) {
   const { category } = await params;
 
-  if (!Object.prototype.hasOwnProperty.call(categories, category)) {
+  if (!Object.prototype.hasOwnProperty.call(categoryTitles, category)) {
     notFound();
   }
 
-  const page = categories[category as Category];
+  const lang = await getLang();
+  const key = category as Category;
+  const title = navLabel(categoryTitles[key], lang);
+  const text = categoryText[key];
+  const localizedVacancies = vacancies.map((v) => localizeVacancy(v, lang));
 
   return (
     <main>
       {/* Page Banner */}
       <section className="page-banner">
         <div className="site-container page-banner-inner">
-          <nav className="breadcrumbs" aria-label="Breadcrumbs">
-            <Link href="/">Home</Link>
+          <nav className="breadcrumbs" aria-label={nt.breadcrumbsAria[lang]}>
+            <Link href="/">{navLabel("Home", lang)}</Link>
             <span aria-hidden="true">/</span>
-            <span>Notice Board</span>
+            <span>{navLabel("Notice Board", lang)}</span>
             <span aria-hidden="true">/</span>
-            <span>{page.title}</span>
+            <span>{title}</span>
           </nav>
 
-          <h1>{page.title}</h1>
-          <p>{page.intro}</p>
+          <h1>{title}</h1>
+          <p>{text.intro[lang]}</p>
         </div>
       </section>
 
@@ -185,10 +122,7 @@ export default async function NoticeCategoryPage({ params }: Props) {
         <div className="site-container">
 
           {/* Category Navigation */}
-          <nav
-            className="notice-category-navigation"
-            aria-label="Notice board categories"
-          >
+          <nav className="notice-category-navigation" aria-label={nt.navAria[lang]}>
             {categoryLinks.map((item) => (
               <Link
                 key={item.href}
@@ -198,25 +132,19 @@ export default async function NoticeCategoryPage({ params }: Props) {
                     ? "notice-category-tab active"
                     : "notice-category-tab"
                 }
-                aria-current={
-                  item.href === `/notices/${category}`
-                    ? "page"
-                    : undefined
-                }
+                aria-current={item.href === `/notices/${category}` ? "page" : undefined}
               >
-                {item.label}
+                {navLabel(item.label, lang)}
               </Link>
             ))}
           </nav>
 
           {/* Section Heading */}
           <div className="notice-category-heading">
-            <span className="section-kicker">
-              CFSL Hyderabad · Notice Board
-            </span>
+            <span className="section-kicker">{nt.kicker[lang]}</span>
 
-            <h2>{page.heading}</h2>
-            <p>{page.description}</p>
+            <h2>{text.heading[lang]}</h2>
+            <p>{text.description[lang]}</p>
           </div>
 
           {/* Latest News */}
@@ -226,147 +154,119 @@ export default async function NoticeCategoryPage({ params }: Props) {
                 <Newspaper size={29} />
               </span>
 
-              <h3>No announcements published yet</h3>
+              <h3>{nt.newsEmptyTitle[lang]}</h3>
 
-              <p>
-                News updates and institutional announcements will
-                be displayed here when they are officially published
-                and approved for public communication.
-              </p>
+              <p>{nt.newsEmptyText[lang]}</p>
             </div>
           )}
 
           {/* Vacancy */}
-          
-{/* Vacancy */}
-{category === "vacancy" && (
-  <>
-    {vacancies.length === 0 ? (
-      <div className="notice-empty-state">
-        <span className="notice-empty-icon">
-          <BriefcaseBusiness size={29} />
-        </span>
-
-        <h3>Recruitment information</h3>
-
-        <p>
-          Official vacancy notifications, recruitment
-          advertisements and related documents will be
-          published in this section after verification.
-        </p>
-
-        <div className="notice-information">
-          <Info size={19} />
-
-          <p>
-            This section has not yet been populated with
-            recruitment notices. This does not confirm
-            whether recruitment opportunities are currently
-            open or closed.
-          </p>
-        </div>
-      </div>
-    ) : (
-      <div className="notice-vacancy-list">
-        {vacancies.map((vacancy) => (
-          <article
-            className="notice-vacancy-card"
-            key={vacancy.id}
-          >
-            <div className="notice-vacancy-top">
-              <div className="notice-vacancy-title">
-                <span className="notice-vacancy-icon">
-                  <BriefcaseBusiness size={22} />
-                </span>
-
-                <div>
-                  <span className="notice-vacancy-category">
-                    Recruitment Notification
+          {category === "vacancy" && (
+            <>
+              {localizedVacancies.length === 0 ? (
+                <div className="notice-empty-state">
+                  <span className="notice-empty-icon">
+                    <BriefcaseBusiness size={29} />
                   </span>
 
-                  <h3>{vacancy.postName}</h3>
+                  <h3>{nt.vacEmptyTitle[lang]}</h3>
 
-                  <span className="notice-vacancy-number">
-                    {vacancy.notificationNumber}
-                  </span>
+                  <p>{nt.vacEmptyText[lang]}</p>
+
+                  <div className="notice-information">
+                    <Info size={19} />
+
+                    <p>{nt.vacEmptyInfo[lang]}</p>
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className="notice-vacancy-list">
+                  {localizedVacancies.map((vacancy) => (
+                    <article className="notice-vacancy-card" key={vacancy.id}>
+                      <div className="notice-vacancy-top">
+                        <div className="notice-vacancy-title">
+                          <span className="notice-vacancy-icon">
+                            <BriefcaseBusiness size={22} />
+                          </span>
 
-              <span
-                className={`notice-vacancy-status ${
-                  vacancy.status === "Open"
-                    ? "is-open"
-                    : "is-closed"
-                }`}
-              >
-                {vacancy.status}
-              </span>
-            </div>
+                          <div>
+                            <span className="notice-vacancy-category">
+                              {nt.recruitmentNotification[lang]}
+                            </span>
 
-            <p className="notice-vacancy-description">
-              {vacancy.description}
-            </p>
+                            <h3>{vacancy.postName}</h3>
 
-            <div className="notice-vacancy-details">
-              <div>
-                <span>Published Date</span>
-                <strong>{vacancy.publishedDate}</strong>
-              </div>
+                            <span className="notice-vacancy-number">
+                              {vacancy.notificationNumber}
+                            </span>
+                          </div>
+                        </div>
 
-              <div>
-                <span>Last Date to Apply</span>
-                <strong>{vacancy.lastDate}</strong>
-              </div>
-            </div>
+                        <span
+                          className={`notice-vacancy-status ${
+                            vacancy.status === "Open" ? "is-open" : "is-closed"
+                          }`}
+                        >
+                          {vacancy.status === "Open" ? nt.open[lang] : nt.closed[lang]}
+                        </span>
+                      </div>
 
-            <div className="notice-vacancy-footer">
-              <a
-                href={vacancy.notificationUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="notice-vacancy-document"
-              >
-                <FileText size={17} />
-                View Official Notification
-                <ArrowUpRight size={16} />
-              </a>
-            </div>
-          </article>
-        ))}
-      </div>
-    )}
-  </>
-)}
+                      <p className="notice-vacancy-description">{vacancy.description}</p>
 
+                      <div className="notice-vacancy-details">
+                        <div>
+                          <span>{nt.publishedDate[lang]}</span>
+                          <strong>{vacancy.publishedDate}</strong>
+                        </div>
+
+                        <div>
+                          <span>{nt.lastDate[lang]}</span>
+                          <strong>{vacancy.lastDate}</strong>
+                        </div>
+                      </div>
+
+                      <div className="notice-vacancy-footer">
+                        <a
+                          href={vacancy.notificationUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="notice-vacancy-document"
+                        >
+                          <FileText size={17} />
+                          {nt.viewNotification[lang]}
+                          <ArrowUpRight size={16} />
+                        </a>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              )}
+            </>
+          )}
 
           {/* Important Links */}
           {category === "important-links" && (
             <div className="notice-resource-grid">
-              {officialLinks.map((item) => (
-                <article
-                  className="notice-resource-card"
-                  key={item.title}
-                >
+              {linkText.map((item, i) => (
+                <article className="notice-resource-card" key={i}>
                   <span className="notice-resource-icon">
                     <Link2 size={22} />
                   </span>
 
                   <div className="notice-resource-content">
-                    <span className="notice-resource-category">
-                      {item.category}
-                    </span>
+                    <span className="notice-resource-category">{item.category[lang]}</span>
 
-                    <h3>{item.title}</h3>
+                    <h3>{item.title[lang]}</h3>
 
-                    <p>{item.description}</p>
+                    <p>{item.description[lang]}</p>
 
                     <a
-                      href={item.href}
+                      href={officialLinkHrefs[i]}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="notice-resource-action"
                     >
-                      {item.label}
+                      {item.label[lang]}
                       <ArrowUpRight size={17} />
                     </a>
                   </div>
@@ -376,12 +276,7 @@ export default async function NoticeCategoryPage({ params }: Props) {
           )}
 
           {/* Source Note */}
-          <p className="notice-category-source-note">
-            External websites are maintained by their respective
-            organisations. Please refer to the original source for
-            current information, instructions and updates.
-          </p>
-
+          <p className="notice-category-source-note">{nt.sourceNote[lang]}</p>
         </div>
       </section>
     </main>

@@ -3151,3 +3151,12 @@ body.high-contrast .site-header .brand-emblem img {
     margin-bottom: 0.6rem;
   }
 }
+html:lang(hi) body,
+html:lang(hi) body * {
+  font-family: var(--font-devanagari), "Noto Sans Devanagari", sans-serif;
+}
+
+html:lang(te) body,
+html:lang(te) body * {
+  font-family: var(--font-telugu), "Noto Sans Telugu", sans-serif;
+}

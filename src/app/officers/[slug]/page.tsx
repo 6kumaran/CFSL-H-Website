@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getOfficerBySlug } from "../../../data/officers";
+import { localizeOfficer, officerText as t } from "../../../data/officers-i18n";
+import { getLang } from "../../../lib/i18n-server";
 
 type OfficerPageProps = {
   params: Promise<{ slug: string }>;
@@ -8,9 +10,12 @@ type OfficerPageProps = {
 
 export default async function OfficerProfilePage({ params }: OfficerPageProps) {
   const { slug } = await params;
-  const officer = getOfficerBySlug(slug);
+  const lang = await getLang();
+  const base = getOfficerBySlug(slug);
 
-  if (!officer) notFound();
+  if (!base) notFound();
+
+  const officer = localizeOfficer(base, lang);
 
   const hasVerifiedDetails =
     Boolean(officer.biography) ||
@@ -24,7 +29,7 @@ export default async function OfficerProfilePage({ params }: OfficerPageProps) {
     <main className="section page-content officer-profile-page">
       <div className="site-container">
         <Link href="/divisions" className="officer-profile-back">
-          ← Back to Scientific Divisions
+          {t.back[lang]}
         </Link>
 
         <section className="officer-profile-card">
@@ -33,11 +38,12 @@ export default async function OfficerProfilePage({ params }: OfficerPageProps) {
               <img
                 className="officer-profile-photo"
                 src={officer.photo}
-                alt={`Portrait of ${officer.name}`}
+                alt={t.portraitOf[lang](officer.name)}
               />
             ) : (
               <div className="officer-profile-placeholder" aria-hidden="true">
-                {officer.name
+                {/* Initials come from the English name so they render the same in every language */}
+                {base.name
                   .split(" ")
                   .filter(Boolean)
                   .slice(0, 2)
@@ -48,31 +54,26 @@ export default async function OfficerProfilePage({ params }: OfficerPageProps) {
             )}
 
             <div className="officer-profile-heading">
-              <span className="section-kicker">CFSL Hyderabad · Officer Profile</span>
+              <span className="section-kicker">{t.kicker[lang]}</span>
               <h1>{officer.name}</h1>
               <p>{officer.designation}</p>
             </div>
           </div>
 
           {!hasVerifiedDetails ? (
-            <p className="officer-profile-notice">
-              The official profile information for this officer is being
-              compiled. Biography, qualifications, experience, photograph and
-              official contact details will be published here after
-              verification.
-            </p>
+            <p className="officer-profile-notice">{t.notice[lang]}</p>
           ) : null}
 
           {officer.biography ? (
             <section className="officer-profile-section">
-              <h2>Professional Profile</h2>
+              <h2>{t.profile[lang]}</h2>
               <p>{officer.biography}</p>
             </section>
           ) : null}
 
           {officer.qualifications.length > 0 ? (
             <section className="officer-profile-section">
-              <h2>Qualifications</h2>
+              <h2>{t.qualifications[lang]}</h2>
               <ul>
                 {officer.qualifications.map((item) => (
                   <li key={item}>{item}</li>
@@ -83,14 +84,14 @@ export default async function OfficerProfilePage({ params }: OfficerPageProps) {
 
           {officer.experience ? (
             <section className="officer-profile-section">
-              <h2>Professional Experience</h2>
+              <h2>{t.experience[lang]}</h2>
               <p>{officer.experience}</p>
             </section>
           ) : null}
 
           {officer.specialisations.length > 0 ? (
             <section className="officer-profile-section">
-              <h2>Areas of Specialisation</h2>
+              <h2>{t.specialisations[lang]}</h2>
               <ul>
                 {officer.specialisations.map((item) => (
                   <li key={item}>{item}</li>
@@ -101,11 +102,11 @@ export default async function OfficerProfilePage({ params }: OfficerPageProps) {
 
           {officer.email || officer.officePhone ? (
             <section className="officer-profile-section">
-              <h2>Official Contact</h2>
+              <h2>{t.contact[lang]}</h2>
               <dl className="officer-profile-contact">
                 {officer.email ? (
                   <>
-                    <dt>Email</dt>
+                    <dt>{t.email[lang]}</dt>
                     <dd>
                       <a href={`mailto:${officer.email}`}>{officer.email}</a>
                     </dd>
@@ -113,7 +114,7 @@ export default async function OfficerProfilePage({ params }: OfficerPageProps) {
                 ) : null}
                 {officer.officePhone ? (
                   <>
-                    <dt>Office Phone</dt>
+                    <dt>{t.phone[lang]}</dt>
                     <dd>
                       <a href={`tel:${officer.officePhone}`}>{officer.officePhone}</a>
                     </dd>

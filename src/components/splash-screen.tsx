@@ -2,11 +2,14 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { useLanguage } from "./language-provider";
+import { splashText as s } from "../data/ui-text";
 
 const DISPLAY_DURATION_MS = 1800;
 const FADE_DURATION_MS = 480;
 
 export function SplashScreen() {
+  const { lang } = useLanguage();
   const [leaving, setLeaving] = useState(false);
   const [visible, setVisible] = useState(true);
 
@@ -45,7 +48,9 @@ export function SplashScreen() {
           unoptimized
         />
         <span className="cfsl-splash__rule" aria-hidden="true" />
-        <p className="cfsl-splash__title">CFSL, Hyderabad</p>
+        aria-label={s.aria[lang]}
+        alt={s.logoAlt[lang]}
+        <p className="cfsl-splash__title">{s.title[lang]}</p>
       </div>
     </div>
   );

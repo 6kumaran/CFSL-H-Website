@@ -15,8 +15,9 @@ import {
   X,
 } from "lucide-react";
 import { navigation } from "../data/site-content";
-
-const languages = ["English", "Hindi", "Telugu"] as const;
+import { useLanguage } from "./language-provider";
+import { LANGS, LANG_LABELS } from "../lib/i18n";
+import { headerText as h, navLabel } from "../data/ui-text";
 
 export function SiteHeader() {
   const pathname = usePathname();
@@ -24,7 +25,7 @@ export function SiteHeader() {
   const [searchQuery, setSearchQuery] = useState("");
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
-  const [language, setLanguage] = useState<(typeof languages)[number]>("English");
+  const { lang, setLang } = useLanguage();
 
   const closeMenus = () => {
     setMobileOpen(false);
@@ -55,12 +56,12 @@ export function SiteHeader() {
     >
       <Search className="search-icon" size={15} aria-hidden="true" />
       <input
-        aria-label="Search the entire website"
-        placeholder="Search the entire website"
+        aria-label={h.search[lang]}
+        placeholder={h.search[lang]}
         value={searchQuery}
         onChange={(event) => setSearchQuery(event.target.value)}
       />
-      <button type="submit" aria-label="Search the entire website">
+      <button type="submit" aria-label={h.search[lang]}>
         <ArrowUpRight size={15} aria-hidden="true" />
       </button>
     </form>
@@ -70,9 +71,7 @@ export function SiteHeader() {
     <header className="site-header">
       <div className="utility-bar">
         <div className="site-container utility-inner">
-          <span className="utility-caption">
-            Government of India · Ministry of Home Affairs · Directorate of Forensic Science Services
-          </span>
+          <span className="utility-caption">{h.govLine[lang]}</span>
           <div className="utility-right">
             <div className="utility-actions">
               <div className="utility-dropdown" data-open={openMenu === "accessibility"}>
@@ -83,18 +82,18 @@ export function SiteHeader() {
                   onClick={() => toggleMenu("accessibility")}
                 >
                   <Accessibility size={15} aria-hidden="true" />
-                  <span>Accessibility</span>
+                  <span>{h.accessibility[lang]}</span>
                   <ChevronDown className="small-chevron" size={13} aria-hidden="true" />
                 </button>
                 <div className="utility-menu">
                   <button type="button" onClick={() => { document.documentElement.style.fontSize = "18px"; setOpenMenu(null); }}>
-                    Increase text size
+                    {h.increaseText[lang]}
                   </button>
                   <button type="button" onClick={() => { document.documentElement.style.fontSize = "16px"; setOpenMenu(null); }}>
-                    Reset text size
+                    {h.resetText[lang]}
                   </button>
                   <button type="button" onClick={() => { document.body.classList.toggle("high-contrast"); setOpenMenu(null); }}>
-                    Toggle high contrast
+                    {h.contrast[lang]}
                   </button>
                 </div>
               </div>
@@ -107,15 +106,15 @@ export function SiteHeader() {
                   onClick={() => toggleMenu("sitemap")}
                 >
                   <Network size={15} aria-hidden="true" />
-                  <span>Sitemap</span>
+                  <span>{h.sitemap[lang]}</span>
                   <ChevronDown className="small-chevron" size={13} aria-hidden="true" />
                 </button>
                 <div className="utility-menu sitemap-menu">
                   {navigation.map((item) => (
                     <div key={item.label}>
-                      <Link href={item.href} onClick={closeMenus}>{item.label}</Link>
+                      <Link href={item.href} onClick={closeMenus}>{navLabel(item.label, lang)}</Link>
                       {item.children?.map((child) => (
-                        <Link key={child.label} href={child.href} onClick={closeMenus}>{child.label}</Link>
+                        <Link key={child.label} href={child.href} onClick={closeMenus}>{navLabel(child.label, lang)}</Link>
                       ))}
                     </div>
                   ))}
@@ -130,18 +129,18 @@ export function SiteHeader() {
                   onClick={() => toggleMenu("language")}
                 >
                   <Languages size={15} aria-hidden="true" />
-                  <span>{language}</span>
+                  <span>{LANG_LABELS[lang]}</span>
                   <ChevronDown className="small-chevron" size={13} aria-hidden="true" />
                 </button>
                 <div className="utility-menu language-menu">
-                  {languages.map((item) => (
+                  {LANGS.map((code) => (
                     <button
                       type="button"
-                      key={item}
-                      className={language === item ? "selected-language" : ""}
-                      onClick={() => { setLanguage(item); setOpenMenu(null); }}
+                      key={code}
+                      className={lang === code ? "selected-language" : ""}
+                      onClick={() => { setLang(code); setOpenMenu(null); }}
                     >
-                      {item}{language === item ? " ✓" : ""}
+                      {LANG_LABELS[code]}{lang === code ? " ✓" : ""}
                     </button>
                   ))}
                 </div>
@@ -153,25 +152,25 @@ export function SiteHeader() {
 
       <div className="masthead">
         <div className="site-container masthead-inner">
-          <Link href="/" className="brand" aria-label="CFSL Hyderabad home" onClick={closeMenus}>
+          <Link href="/" className="brand" aria-label={h.homeAria[lang]} onClick={closeMenus}>
             <span className="brand-emblem" aria-hidden="true">
-              <img src="/Indian_Embelem-removebg-preview.png" alt="National Emblem" />
+              <img src="/Indian_Embelem-removebg-preview.png" alt={h.emblemAlt[lang]} />
             </span>
             <span className="brand-copy">
-              <span className="brand-title">Central Forensic Science Laboratory, Hyderabad</span>
-              <span className="brand-subtitle">Directorate of Forensic Science Services</span>
+              <span className="brand-title">{h.brandTitle[lang]}</span>
+              <span className="brand-subtitle">{h.brandSubtitle[lang]}</span>
             </span>
           </Link>
           <div className="identity-actions">
-            <span className="national-flag" role="img" aria-label="Flag of India">
-              <img src="/Indian_Flag.jpg" alt="Flag of India" />
+            <span className="national-flag" role="img" aria-label={h.flagAlt[lang]}>
+              <img src="/Indian_Flag.jpg" alt={h.flagAlt[lang]} />
             </span>
           </div>
         </div>
       </div>
 
       <div className="nav-wrap">
-        <nav className="site-container nav-inner" aria-label="Main navigation">
+        <nav className="site-container nav-inner" aria-label={h.mainNav[lang]}>
           <button
             className="mobile-toggle"
             type="button"
@@ -180,7 +179,7 @@ export function SiteHeader() {
             onClick={() => setMobileOpen((value) => !value)}
           >
             {mobileOpen ? <X size={18} aria-hidden="true" /> : <Menu size={18} aria-hidden="true" />}
-            {mobileOpen ? "Close" : "Menu"}
+            {mobileOpen ? h.close[lang] : h.menu[lang]}
           </button>
 
           <div className="nav-links" id="primary-navigation" data-open={mobileOpen}>
@@ -201,21 +200,21 @@ export function SiteHeader() {
                     }}
                     onClick={() => toggleMenu(item.label)}
                   >
-                    {item.label}
+                    {navLabel(item.label, lang)}
                     <ChevronDown className="nav-chevron" size={13} aria-hidden="true" />
                   </button>
                   <div className="dropdown">
                     {item.children.map((child) => (
                       <Link
-  key={child.label}
-  href={child.href}
-  onClick={() => {
-    setOpenMenu(null);
-    setMobileOpen(false);
-  }}
->
-  {child.label}
-</Link>
+                        key={child.label}
+                        href={child.href}
+                        onClick={() => {
+                          setOpenMenu(null);
+                          setMobileOpen(false);
+                        }}
+                      >
+                        {navLabel(child.label, lang)}
+                      </Link>
                     ))}
                   </div>
                 </div>
@@ -227,7 +226,7 @@ export function SiteHeader() {
                   aria-current={pathname === item.href ? "page" : undefined}
                   onClick={closeMenus}
                 >
-                  {item.label}
+                  {navLabel(item.label, lang)}
                 </Link>
               )
             )}

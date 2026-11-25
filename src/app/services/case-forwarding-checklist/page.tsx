@@ -1,14 +1,15 @@
-
 "use client";
 
 import { useState } from "react";
 import Link from "next/link";
 import JSZip from "jszip";
+import { useLanguage } from "../../../components/language-provider";
+import { navLabel } from "../../../data/ui-text";
+import { cf } from "../../../data/services-i18n";
 
 type CaseDocument = {
   id: string;
   title: string;
-  description: string;
   filename: string;
   path: string;
 };
@@ -18,36 +19,59 @@ const documents: CaseDocument[] = [
   {
     id: "case-opening",
     title: "Case Opening",
-    description: "Sample case opening document.",
     filename: "case-opening.docx",
     path: "/documents/case-forwarding/case-opening.docx",
   },
   {
     id: "case-fir",
     title: "Case / FIR",
-    description: "Sample Case / FIR document.",
     filename: "case-fir.docx",
     path: "/documents/case-forwarding/case-fir.docx",
   },
   {
     id: "chain-of-custody",
     title: "Chain of Custody",
-    description: "Sample chain of custody document.",
     filename: "chain-of-custody.docx",
     path: "/documents/case-forwarding/chain-of-custody.docx",
   },
 ];
 
-const forwardingLetterPath =
-  "/documents/case-forwarding/Case_Forwarding_Letter.pdf";
+const forwardingLetterPath = "/documents/case-forwarding/Case_Forwarding_Letter.pdf";
+
+type Status =
+  | { kind: "idle" }
+  | { kind: "preparing" }
+  | { kind: "done" }
+  | { kind: "load-failed"; docId: string }
+  | { kind: "failed" };
+
+class LoadError extends Error {
+  docId: string;
+  constructor(docId: string) {
+    super("Could not load document");
+    this.docId = docId;
+  }
+}
 
 export default function CaseForwardingChecklistPage() {
+  const { lang } = useLanguage();
   const [isPreparing, setIsPreparing] = useState(false);
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState<Status>({ kind: "idle" });
+
+  const statusText =
+    status.kind === "preparing"
+      ? cf.preparing[lang]
+      : status.kind === "done"
+        ? cf.done[lang]
+        : status.kind === "load-failed"
+          ? cf.loadFailed[lang](cf.docTitles[status.docId]?.[lang] ?? status.docId)
+          : status.kind === "failed"
+            ? cf.failed[lang]
+            : "";
 
   const downloadZip = async () => {
     setIsPreparing(true);
-    setStatus("Preparing sample documents…");
+    setStatus({ kind: "preparing" });
 
     try {
       const zip = new JSZip();
@@ -63,9 +87,7 @@ export default function CaseForwardingChecklistPage() {
           const response = await fetch(doc.path);
 
           if (!response.ok) {
-            throw new Error(
-              `Could not load ${doc.title}. Please try again.`
-            );
+            throw new LoadError(doc.id);
           }
 
           return {
@@ -80,27 +102,24 @@ export default function CaseForwardingChecklistPage() {
         folder.file(doc.filename, blob);
       }
 
-      // Include a reference checklist.
+      // Include a reference checklist (in the visitor's language).
+      const r = cf.readme;
       const checklist = [
-        "CFSL HYDERABAD - CASE FORWARDING",
-        "SAMPLE DOCUMENTS",
+        r.title[lang],
+        r.sub[lang],
         "",
-        "Documents included:",
-        ...documents.map((doc, index) => `${index + 1}. ${doc.title}`),
+        r.included[lang],
+        ...documents.map((doc, index) => `${index + 1}. ${cf.docTitles[doc.id][lang]}`),
         "",
-        `Prepared on: ${new Date().toLocaleString()}`,
+        `${r.preparedOn[lang]} ${new Date().toLocaleString(cf.localeTag[lang])}`,
         "",
-        "Note: These are sample documents provided for reference.",
-        "Please verify the applicable official requirements before",
-        "forwarding a case to CFSL Hyderabad.",
+        ...r.note.map((line) => line[lang]),
       ].join("\n");
 
       folder.file("Readme-Document-Checklist.txt", checklist);
 
       // Generate ZIP.
-      const blob = await zip.generateAsync({
-        type: "blob",
-      });
+      const blob = await zip.generateAsync({ type: "blob" });
 
       const url = URL.createObjectURL(blob);
       const anchor = document.createElement("a");
@@ -114,14 +133,12 @@ export default function CaseForwardingChecklistPage() {
 
       window.setTimeout(() => URL.revokeObjectURL(url), 1000);
 
-      setStatus(
-        "Sample ZIP downloaded successfully."
-      );
+      setStatus({ kind: "done" });
     } catch (error) {
       setStatus(
-        error instanceof Error
-          ? error.message
-          : "The ZIP could not be created. Please try again."
+        error instanceof LoadError
+          ? { kind: "load-failed", docId: error.docId }
+          : { kind: "failed" }
       );
     } finally {
       setIsPreparing(false);
@@ -134,19 +151,16 @@ export default function CaseForwardingChecklistPage() {
       <section className="page-banner">
         <div className="site-container page-banner-inner">
           <nav className="breadcrumbs" aria-label="Breadcrumbs">
-            <Link href="/">Home</Link>
+            <Link href="/">{navLabel("Home", lang)}</Link>
             <span aria-hidden="true">/</span>
-            <Link href="/services">Services</Link>
+            <Link href="/services">{navLabel("Services", lang)}</Link>
             <span aria-hidden="true">/</span>
-            <span>Case Forwarding Checklist</span>
+            <span>{navLabel("Case Forwarding Checklist", lang)}</span>
           </nav>
 
-          <h1>Case Forwarding Checklist</h1>
+          <h1>{navLabel("Case Forwarding Checklist", lang)}</h1>
 
-          <p>
-            Guidelines and document requirements for forwarding
-            cases to CFSL Hyderabad.
-          </p>
+          <p>{cf.bannerText[lang]}</p>
         </div>
       </section>
 
@@ -156,134 +170,101 @@ export default function CaseForwardingChecklistPage() {
 
           {/* Introduction */}
           <div className="case-checklist-intro">
-            <span className="case-checklist-eyebrow">
-              Case Forwarding Guidelines
-            </span>
+            <span className="case-checklist-eyebrow">{cf.eyebrow[lang]}</span>
 
-            <h1>Documents Required for Case Forwarding</h1>
+            <h1>{cf.introTitle[lang]}</h1>
 
-            <p>
-              Before forwarding a case to the Central Forensic
-              Science Laboratory, Hyderabad, please refer to the
-              following document requirements and prepare the
-              necessary supporting documents.
-            </p>
+            <p>{cf.introText[lang]}</p>
           </div>
 
           <div className="case-checklist-panel">
 
             {/* Section 1: Forwarding Letter */}
             <div className="case-checklist-panel-head">
-              <h2>1. Case Forwarding Letter</h2>
-              <p>
-                Refer to the sample case forwarding letter
-                provided below.
-              </p>
+              <h2>{cf.s1Title[lang]}</h2>
+              <p>{cf.s1Text[lang]}</p>
             </div>
 
             <div className="case-checklist-body">
-              
-<div className="case-forwarding-letter">
-  <a
-    href={forwardingLetterPath}
-    target="_blank"
-    rel="noopener noreferrer"
-    className="case-forwarding-letter-open"
-    aria-label="Open Case Forwarding Letter PDF in a new tab"
-  >
-    <span className="case-forwarding-pdf-icon">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="27"
-        height="27"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.7"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        aria-hidden="true"
-      >
-        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-        <path d="M14 2v6h6" />
-        <path d="M8 13h8" />
-        <path d="M8 17h8" />
-      </svg>
-    </span>
+              <div className="case-forwarding-letter">
+                <a
+                  href={forwardingLetterPath}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="case-forwarding-letter-open"
+                  aria-label={cf.openPdfAria[lang]}
+                >
+                  <span className="case-forwarding-pdf-icon">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="27"
+                      height="27"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.7"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                      <path d="M14 2v6h6" />
+                      <path d="M8 13h8" />
+                      <path d="M8 17h8" />
+                    </svg>
+                  </span>
 
-    <span className="case-forwarding-letter-details">
-      <strong>Case Forwarding Letter.pdf</strong>
-      <small>PDF Document</small>
-    </span>
-  </a>
+                  <span className="case-forwarding-letter-details">
+                    <strong>Case Forwarding Letter.pdf</strong>
+                    <small>{cf.pdfDocument[lang]}</small>
+                  </span>
+                </a>
 
-  <a
-    href={forwardingLetterPath}
-    download="Case_Forwarding_Letter.pdf"
-    className="case-checklist-button secondary"
-  >
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="17"
-      height="17"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-      <path d="m7 10 5 5 5-5" />
-      <path d="M12 15V3" />
-    </svg>
-    Download PDF
-  </a>
-</div>
-
+                <a
+                  href={forwardingLetterPath}
+                  download="Case_Forwarding_Letter.pdf"
+                  className="case-checklist-button secondary"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="17"
+                    height="17"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <path d="m7 10 5 5 5-5" />
+                    <path d="M12 15V3" />
+                  </svg>
+                  {cf.downloadPdf[lang]}
+                </a>
+              </div>
             </div>
 
             {/* Section 2: Document Requirements */}
             <div className="case-checklist-panel-head">
-              <h2>2. Documents Required</h2>
-              <p>
-                The following supporting documents should be
-                prepared for case forwarding.
-              </p>
+              <h2>{cf.s2Title[lang]}</h2>
+              <p>{cf.s2Text[lang]}</p>
             </div>
 
-            
-<div className="case-checklist-body">
-  <ul className="case-forwarding-requirements">
-    <li>
-      <strong>Case Opening Document</strong>
-      <span>
-        Relevant case opening details and information.
-      </span>
-    </li>
-
-    <li>
-      <strong>Case / FIR Copy</strong>
-      <span>
-        A copy of the relevant case details or FIR.
-      </span>
-    </li>
-
-    <li>
-      <strong>Chain of Custody Document</strong>
-      <span>
-        Documentation relating to the handling and transfer
-        of submitted exhibits or evidence.
-      </span>
-    </li>
-  </ul>
-</div>
+            <div className="case-checklist-body">
+              <ul className="case-forwarding-requirements">
+                {cf.requirements.map((item, i) => (
+                  <li key={i}>
+                    <strong>{item.title[lang]}</strong>
+                    <span>{item.text[lang]}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
             <div className="case-checklist-body">
               <div className="case-forwarding-download">
-
-
                 <button
                   type="button"
                   className="case-checklist-button"
@@ -291,7 +272,7 @@ export default function CaseForwardingChecklistPage() {
                   disabled={isPreparing}
                 >
                   {isPreparing ? (
-                    "Preparing ZIP…"
+                    cf.preparingZip[lang]
                   ) : (
                     <>
                       <svg
@@ -310,30 +291,21 @@ export default function CaseForwardingChecklistPage() {
                         <path d="m7 10 5 5 5-5" />
                         <path d="M12 15V3" />
                       </svg>
-                      Download Sample ZIP
+                      {cf.downloadZip[lang]}
                     </>
                   )}
                 </button>
               </div>
 
-              <p
-                className="case-checklist-status"
-                role="status"
-                aria-live="polite"
-              >
-                {status}
+              <p className="case-checklist-status" role="status" aria-live="polite">
+                {statusText}
               </p>
             </div>
           </div>
 
           {/* Disclaimer */}
           <p className="case-checklist-disclaimer">
-            <strong>Please note:</strong> The documents provided
-            are sample materials for reference purposes only.
-            Please verify the latest applicable instructions
-            and document requirements issued by CFSL Hyderabad
-            before forwarding a case. This page does not replace
-            official guidance.
+            <strong>{cf.noteLabel[lang]}</strong> {cf.noteText[lang]}
           </p>
 
         </div>

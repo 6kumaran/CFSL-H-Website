@@ -6,6 +6,16 @@ import {
   pages,
   quickLinks,
 } from "./site-content";
+import {
+  localizeDivisions,
+  localizeEvents,
+  localizeNotices,
+  localizePage,
+  localizeQuickLinks,
+} from "./site-content-i18n";
+import { navLabel } from "./ui-text";
+import { cat, componentI18n, navDesc } from "./search-i18n";
+import type { Lang } from "../lib/i18n";
 
 export type SearchEntry = {
   title: string;
@@ -15,62 +25,8 @@ export type SearchEntry = {
   keywords?: string;
 };
 
-const pageEntries: SearchEntry[] = Object.entries(pages).map(([slug, page]) => ({
-  title: page.title,
-  description: [
-    page.intro,
-    page.heading,
-    ...page.paragraphs,
-    ...page.bullets,
-  ].filter(Boolean).join(" "),
-  href: `/${slug}`,
-  category: "Website page",
-}));
-
-const navigationEntries: SearchEntry[] = navigation.flatMap((item) => [
-  {
-    title: item.label,
-    description: `Navigate to ${item.label}`,
-    href: item.href,
-    category: "Navigation",
-  },
-  ...(item.children ?? []).map((child) => ({
-    title: child.label,
-    description: `Navigate to ${child.label} under ${item.label}`,
-    href: child.href,
-    category: "Navigation",
-  })),
-]);
-
-const divisionEntries: SearchEntry[] = divisions.map((division) => ({
-  title: division.title,
-  description: division.description,
-  href: division.href,
-  category: "Scientific division",
-}));
-
-const noticeEntries: SearchEntry[] = notices.map((notice) => ({
-  title: notice.title,
-  description: `${notice.summary} ${notice.type} ${notice.date}`,
-  href: "/notices",
-  category: "Notice",
-}));
-
-const eventEntries: SearchEntry[] = events.map((event) => ({
-  title: event.title,
-  description: event.description,
-  href: "/notices",
-  category: "Updates and information",
-}));
-
-const quickLinkEntries: SearchEntry[] = quickLinks.map((item) => ({
-  title: item.title,
-  description: item.subtitle,
-  href: item.href,
-  category: "Quick link",
-}));
-
 // Content rendered directly in page components rather than site-content.ts.
+// (English base text; translations live in search-i18n.ts, keyed by title.)
 const componentContentEntries: SearchEntry[] = [
   {
     title: "Forensic Science Laboratory — Welcome",
@@ -172,33 +128,130 @@ const componentContentEntries: SearchEntry[] = [
   },
 ];
 
-export const websiteSearchIndex: SearchEntry[] = [
-  ...pageEntries,
-  ...navigationEntries,
-  ...divisionEntries,
-  ...noticeEntries,
-  ...eventEntries,
-  ...quickLinkEntries,
-  ...componentContentEntries,
-];
+type PageParts = { intro: string; heading: string; paragraphs: string[]; bullets: string[] };
+const joinPage = (p: PageParts) =>
+  [p.intro, p.heading, ...p.paragraphs, ...p.bullets].filter(Boolean).join(" ");
+
+/**
+ * Builds the index for one language. Displayed text is localized; the English
+ * text is kept in `keywords` so English searches still work on Hindi/Telugu pages.
+ */
+function buildIndex(lang: Lang): SearchEntry[] {
+  const en = lang === "en";
+
+  const pageEntries: SearchEntry[] = Object.entries(pages).map(([slug, page]) => {
+    const loc = localizePage(slug, lang)!;
+    return {
+      title: loc.title,
+      description: joinPage(loc),
+      href: `/${slug}`,
+      category: cat("Website page", lang),
+      keywords: en ? undefined : `${page.title} ${joinPage(page)}`,
+    };
+  });
+
+  const navigationEntries: SearchEntry[] = navigation.flatMap((item) => [
+    {
+      title: navLabel(item.label, lang),
+      description: navDesc.to[lang](navLabel(item.label, lang)),
+      href: item.href,
+      category: cat("Navigation", lang),
+      keywords: en ? undefined : item.label,
+    },
+    ...(item.children ?? []).map((child) => ({
+      title: navLabel(child.label, lang),
+      description: navDesc.under[lang](navLabel(child.label, lang), navLabel(item.label, lang)),
+      href: child.href,
+      category: cat("Navigation", lang),
+      keywords: en ? undefined : `${child.label} ${item.label}`,
+    })),
+  ]);
+
+  const divisionEntries: SearchEntry[] = localizeDivisions(lang).map((d, i) => ({
+    title: d.title,
+    description: d.description,
+    href: d.href,
+    category: cat("Scientific division", lang),
+    keywords: en ? undefined : `${divisions[i].title} ${divisions[i].description}`,
+  }));
+
+  const noticeEntries: SearchEntry[] = localizeNotices(lang).map((n, i) => ({
+    title: n.title,
+    description: `${n.summary} ${n.type} ${n.date}`,
+    href: "/notices",
+    category: cat("Notice", lang),
+    keywords: en ? undefined : `${notices[i].title} ${notices[i].summary} ${notices[i].type} ${notices[i].date}`,
+  }));
+
+  const eventEntries: SearchEntry[] = localizeEvents(lang).map((e, i) => ({
+    title: e.title,
+    description: e.description,
+    href: "/notices",
+    category: cat("Updates and information", lang),
+    keywords: en ? undefined : `${events[i].title} ${events[i].description}`,
+  }));
+
+  const quickLinkEntries: SearchEntry[] = localizeQuickLinks(lang).map((q, i) => ({
+    title: q.title,
+    description: q.subtitle,
+    href: q.href,
+    category: cat("Quick link", lang),
+    keywords: en ? undefined : `${quickLinks[i].title} ${quickLinks[i].subtitle}`,
+  }));
+
+  const componentEntries: SearchEntry[] = componentContentEntries.map((entry) => {
+    const tr = en ? undefined : componentI18n[entry.title]?.[lang];
+    return {
+      title: tr?.title ?? entry.title,
+      description: tr?.description ?? entry.description,
+      href: entry.href,
+      category: cat(entry.category, lang),
+      keywords: tr ? `${entry.title} ${entry.description}` : undefined,
+    };
+  });
+
+  return [
+    ...pageEntries,
+    ...navigationEntries,
+    ...divisionEntries,
+    ...noticeEntries,
+    ...eventEntries,
+    ...quickLinkEntries,
+    ...componentEntries,
+  ];
+}
+
+const indexCache = new Map<Lang, SearchEntry[]>();
+export function getSearchIndex(lang: Lang): SearchEntry[] {
+  let index = indexCache.get(lang);
+  if (!index) {
+    index = buildIndex(lang);
+    indexCache.set(lang, index);
+  }
+  return index;
+}
+
+// Kept for any existing imports
+export const websiteSearchIndex: SearchEntry[] = getSearchIndex("en");
 
 function normalize(value: string) {
   return value
     .toLocaleLowerCase()
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^\p{L}\p{N}\s]/gu, " ")
+    // \p{M} keeps Devanagari/Telugu vowel signs and conjuncts intact
+    .replace(/[^\p{L}\p{M}\p{N}\s]/gu, " ")
     .replace(/\s+/g, " ")
     .trim();
 }
 
-export function searchWebsite(query: string): SearchEntry[] {
+export function searchWebsite(query: string, lang: Lang = "en"): SearchEntry[] {
   const normalizedQuery = normalize(query);
   if (!normalizedQuery) return [];
 
   const terms = normalizedQuery.split(" ").filter(Boolean);
 
-  const ranked = websiteSearchIndex
+  const ranked = getSearchIndex(lang)
     .map((entry, index) => {
       const title = normalize(entry.title);
       const description = normalize(entry.description);
