@@ -156,11 +156,11 @@ function HomeContent() {
         <aside className="official-profiles" aria-label={hm.officialsAria[lang]}>
           <div className="official-profile">
             <div className="official-avatar avatar-governor" aria-hidden="true"><img src="/DFSS_Chief.jpg" alt={hm.directorAlt[lang]} /></div>
-            <div><strong>{hm.jainName[lang]}</strong><span>{hm.jainLines.map((line, i) => <span key={i}>{i > 0 && <br />}{line[lang]}</span>)}</span></div>
+            <div><strong>{hm.jainName[lang]}</strong><span>{hm.jainLines.map((line, i) => <span key={i}>{i > 0}{line[lang]}</span>)}</span></div>
           </div>
           <div className="official-profile">
             <div className="official-avatar avatar-governor" aria-hidden="true"><img src="/CFSL_HYD_Director_1.jpeg" alt={hm.directorAlt[lang]} /></div>
-            <div><strong>{hm.midhaName[lang]}</strong><span>{hm.midhaLines.map((line, i) => <span key={i}>{i > 0 && <br />}{line[lang]}</span>)}</span></div>
+            <div><strong>{hm.midhaName[lang]}</strong><span>{hm.midhaLines.map((line, i) => <span key={i}>{i > 0}{line[lang]}</span>)}</span></div>
           </div>
         </aside>
       </div>

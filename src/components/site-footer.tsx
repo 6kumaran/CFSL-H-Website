@@ -25,7 +25,7 @@ export async function SiteFooter() {
             <Link href="/about">{f.about[lang]}</Link>
             <Link href="/divisions">{f.divisions[lang]}</Link>
             <Link href="/services">{f.services[lang]}</Link>
-            <Link href="/notices">{f.notices[lang]}</Link>
+            <Link href="/notices/latest-news">{f.notices[lang]}</Link>
             <Link href="/rti">{f.rti[lang]}</Link>
             <Link href="/contact">{f.contact[lang]}</Link>
           </div>

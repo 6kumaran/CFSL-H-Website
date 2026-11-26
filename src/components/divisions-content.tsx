@@ -68,7 +68,7 @@ const divisionDetails: Record<string, DivisionDetail> = {
   },
 
   "Biological Sciences": {
-    hod: "To be confirmed",
+    hod: "Dr. Deepak Midha",
     overview:
       "Forensic Biology involves the scientific examination of biological materials that may be recovered from crime scenes, objects or other submitted exhibits. Such material can include blood, hair, tissue and other biological traces, depending on the nature of the case. Examination may help determine the nature and relevance of biological evidence and support further scientific analysis. Biological evidence can be particularly important in investigations involving physical contact, violence and unexplained biological traces. The availability of specific serological and DNA examination services at CFSL Hyderabad should be confirmed.",
     history:
@@ -100,7 +100,7 @@ const divisionDetails: Record<string, DivisionDetail> = {
   },
 
   "Questioned Documents": {
-    hod: "To be confirmed",
+    hod: "Mr. Trilochan Joshi",
     overview:
       "Questioned Document Examination focuses on the scientific assessment of documents whose authenticity, authorship or physical characteristics are in dispute. Documents may be examined for handwriting and signature characteristics, alterations, additions, erasures, printing features and other relevant details, where applicable. Comparative examination can help assess similarities and differences between questioned and known material. Such examinations are valuable in cases involving disputed records, suspected document manipulation and other document-related evidence. The precise services available depend on the laboratory's approved scope.",
     history:
@@ -116,7 +116,7 @@ const divisionDetails: Record<string, DivisionDetail> = {
   },
 
   "Explosive Forensics": {
-    hod: "To be confirmed",
+    hod: "Dr. Niranjan Baliarsingh",
     overview:
       "Forensic examination of explosives focuses on the scientific analysis of materials, residues and evidence associated with suspected explosive incidents. Such examinations can help determine the nature and characteristics of submitted materials, identify relevant chemical traces and assess evidence recovered from incident scenes. The analysis of post-blast residues and associated physical evidence may provide valuable information for reconstructing events and supporting investigations. The specific examination methods, facilities and capabilities available at CFSL Hyderabad should be confirmed through official laboratory records.",
     history:
@@ -131,24 +131,8 @@ facilities:
   "Specific analytical instruments, explosive examination facilities and post-blast analysis capabilities require confirmation from official laboratory records.",
   },
 
-  "Research & Development": {
-    hod: "To be confirmed",
-    overview:
-      "Research and Development plays an important role in advancing forensic science through the study, evaluation and improvement of scientific methods and practices. Research activities can contribute to the development of examination procedures, the evaluation of emerging technologies and improvements in the reliability and efficiency of forensic analysis. Collaboration, technical knowledge sharing and scientific training can also support the wider development of forensic capabilities. The specific research programmes, projects and collaborations undertaken by CFSL Hyderabad should be included once verified from official records.",
-    history:
-      "The section's establishment and documented milestones have not yet been verified.",
-    work: [
-      "Research activities relevant to forensic science, where undertaken.",
-      "Evaluation or improvement of scientific examination methods.",
-      "Technical knowledge sharing and training, where officially supported.",
-      "Scientific collaboration and development activities, where applicable.",
-    ],
-    facilities:
-      "Specific research programmes, collaborations and dedicated facilities should be added only after verification.",
-  },
-
   "Psychological Forensics": {
-    hod: "To be confirmed",
+    hod: "Dr. M. Maheshwari",
     overview:
       "Psychological Forensics concerns the application of psychological knowledge and scientific assessment methods to questions arising in legal and investigative contexts. Depending on the approved scope, relevant work may involve the assessment of psychological factors, interpretation of behavioural information and preparation of structured professional observations. Psychological perspectives can contribute to a broader understanding of matters referred for forensic examination. The exact responsibilities, assessment methods and services associated with this section at CFSL Hyderabad require official confirmation.",
     history:
@@ -162,6 +146,45 @@ facilities:
     facilities:
       "Specific psychological assessment tools, facilities and examination capabilities require confirmation from the laboratory.",
   },
+  "DNA Forensics": {
+  hod: "",
+  overview:
+    "DNA forensics applies molecular biology to the examination of biological material connected with criminal investigations. Where suitable samples are available, DNA analysis can help compare biological evidence with reference samples and provide scientific information relevant to an investigation. Because biological material can be small, degraded or mixed, careful handling, documentation and contamination control are essential. The specific DNA examinations available depend on the laboratory's approved scope and capabilities.",
+  history: "The establishment history and milestones of this division are to be confirmed from official CFSL Hyderabad records.",
+  work: [
+    "Examination of biological samples for DNA analysis within the laboratory's approved scope.",
+    "Comparison of evidence samples with reference samples where applicable.",
+    "Documentation of procedures, observations and results.",
+    "Preparation of scientific reports for the referring authority.",
+  ],
+  facilities: "Specific DNA analysis instruments, laboratory facilities and testing capabilities are to be added after verification.",
+},
+"Narcotics & Drugs Forensics": {
+  hod: "Dr. Cijo John",
+  overview:
+    "Narcotics and drugs forensics deals with the scientific examination of suspected narcotic, psychotropic and other drug-related substances submitted by investigating agencies. Analysis helps identify the nature of the material and supports the legal and investigative process. Testing may involve preliminary screening followed by confirmatory laboratory analysis, depending on the sample and the laboratory's approved methods. The categories of substances that can be examined depend on the laboratory's approved scope.",
+  history: "The establishment history and milestones of this division are to be confirmed from official CFSL Hyderabad records.",
+  work: [
+    "Examination of suspected narcotic and drug-related substances within the approved scope.",
+    "Identification and characterisation of submitted samples using suitable analytical methods.",
+    "Documentation of observations and test results.",
+    "Preparation of forensic reports for the referring authority.",
+  ],
+  facilities: "Specific analytical instruments, sample categories handled and laboratory facilities are to be confirmed from official sources.",
+},
+"Toxicology Forensics": {
+  hod: "Mr. S. Sudhakar",
+  overview:
+    "Forensic toxicology involves the scientific examination of biological and non-biological samples for the presence of poisons, drugs, alcohol and other toxic substances. Results can help investigators understand whether such substances were present and support the interpretation of cases involving suspected poisoning or substance exposure. Analysis generally involves careful sample preparation followed by suitable laboratory testing. The sample types and tests available depend on the laboratory's approved scope.",
+  history: "The establishment history and milestones of this division are to be confirmed from official CFSL Hyderabad records.",
+  work: [
+    "Examination of submitted samples for poisons, drugs and other toxic substances within the approved scope.",
+    "Identification of relevant substances using suitable analytical methods.",
+    "Documentation of procedures, observations and results.",
+    "Preparation of scientific reports for the referring authority.",
+  ],
+  facilities: "Specific instruments, accepted sample types and testing capabilities are to be confirmed from official sources.",
+},
 };
 
 /*

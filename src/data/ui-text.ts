@@ -82,9 +82,9 @@ export const footerText = {
     te: "సీఎఫ్‌ఎస్‌ఎల్ హైదరాబాద్, తెలంగాణ, భారతదేశం",
   },
   emailPending: {
-    en: "Official contact details to be added after verification",
-    hi: "आधिकारिक संपर्क विवरण सत्यापन के बाद जोड़े जाएँगे",
-    te: "అధికారిక సంప్రదింపు వివరాలు ధృవీకరణ తర్వాత జోడించబడతాయి",
+    en: "director.cfsl-hyd@gov.in",
+    hi: "director.cfsl-hyd@gov.in",
+    te: "director.cfsl-hyd@gov.in",
   },
   findUs: { en: "Find us", hi: "हमें खोजें", te: "మమ్మల్ని కనుగొనండి" },
   mapTitle: {
