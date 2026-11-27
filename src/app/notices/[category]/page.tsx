@@ -43,17 +43,7 @@ type Vacancy = {
 };
 
 const vacancies: Vacancy[] = [
-  {
-    id: "recruitment-2026-01",
-    postName: "Junior Scientific Officer",
-    notificationNumber: "CFSL/HYD/RECRUITMENT/01/2026",
-    publishedDate: "05 November 2026",
-    lastDate: "30 November 2026",
-    description:
-      "Recruitment notification for the post of Junior Scientific Officer. Refer to the official advertisement for eligibility, qualifications and application instructions.",
-    status: "Open",
-    notificationUrl: "/documents/recruitments/jso-notification.pdf",
-  },
+  
 ];
 
 const categoryLinks = [

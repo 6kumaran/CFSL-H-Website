@@ -100,16 +100,7 @@ export const tabNoun = {
 
 // Notice rows, keyed by the English text
 const noticeTable = new Map<string, { hi: string; te: string }>([
-  ["List of Selected Interns on Stipend Basis for a period of one year in Forensic Science Laboratory, Delhi", {
-    hi: "न्यायालयिक विज्ञान प्रयोगशाला, दिल्ली में एक वर्ष की अवधि के लिए वजीफ़ा आधार पर चयनित प्रशिक्षुओं की सूची",
-    te: "ఢిల్లీలోని ఫోరెన్సిక్ సైన్స్ ప్రయోగశాలలో ఒక సంవత్సర కాలానికి స్టైపెండ్ ఆధారంగా ఎంపికైన ఇంటర్న్‌ల జాబితా",
-  }],
-  ["Revised List of Shortlisted Candidates for the walk in Interview for the post of Intern (Biology Division) on Stipend Basis", {
-    hi: "वजीफ़ा आधार पर प्रशिक्षु (जीव विज्ञान प्रभाग) के पद हेतु वॉक-इन साक्षात्कार के लिए शॉर्टलिस्ट किए गए उम्मीदवारों की संशोधित सूची",
-    te: "స్టైపెండ్ ఆధారంగా ఇంటర్న్ (బయాలజీ విభాగం) పోస్టుకు వాక్-ఇన్ ఇంటర్వ్యూ కోసం షార్ట్‌లిస్ట్ చేసిన అభ్యర్థుల సవరించిన జాబితా",
-  }],
-  ["Recruitment update", { hi: "भर्ती अपडेट", te: "నియామక నవీకరణ" }],
-  ["Interview notice", { hi: "साक्षात्कार सूचना", te: "ఇంటర్వ్యూ నోటీసు" }],
+  
 ]);
 
 export function th(en: string, lang: Lang): string {

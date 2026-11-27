@@ -36,20 +36,6 @@ const componentContentEntries: SearchEntry[] = [
     category: "Homepage",
   },
   {
-    title: "Notifications — Selected interns",
-    description:
-      "List of Selected Interns on Stipend Basis for a period of one year in Forensic Science Laboratory, Delhi. Recruitment update published 20 November 2025.",
-    href: "/notices",
-    category: "Notification",
-  },
-  {
-    title: "Notifications — Shortlisted candidates",
-    description:
-      "Revised List of Shortlisted Candidates for the walk in Interview for the post of Intern Biology Division on Stipend Basis. Interview notice published 17 November 2025.",
-    href: "/notices",
-    category: "Notification",
-  },
-  {
     title: "Case Forwarding Checklist",
     description:
       "Case forwarding documents, forwarding letter, case opening, case FIR, chain of custody, general case forwarding, select documents and download ZIP.",

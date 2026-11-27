@@ -263,7 +263,7 @@ function OverviewContent({ lang }: { lang: Lang }) {
   const shortcutConfig = [
     { href: "/divisions", icon: Microscope },
     { href: "/services", icon: FileCheck2 },
-    { href: "/notices", icon: ArrowRight },
+    { href: "/notices/latest-news", icon: ArrowRight },
     { href: "/rti", icon: ShieldCheck },
   ];
 

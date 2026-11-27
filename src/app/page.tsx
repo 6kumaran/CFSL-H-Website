@@ -17,16 +17,7 @@ type NoticeItem = {
 };
 
 const notificationItems: NoticeItem[] = [
-  {
-    title: "List of Selected Interns on Stipend Basis for a period of one year in Forensic Science Laboratory, Delhi",
-    date: "20-11-2025",
-    category: "Recruitment update",
-  },
-  {
-    title: "Revised List of Shortlisted Candidates for the walk in Interview for the post of Intern (Biology Division) on Stipend Basis",
-    date: "17-11-2025",
-    category: "Interview notice",
-  },
+  
 ];
 
 // Add only verified tender records here. Keeping this empty until official details
